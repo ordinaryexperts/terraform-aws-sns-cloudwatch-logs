@@ -1,8 +1,13 @@
-# terraform-aws-sns-to-cloudwatch-logs-lambda Changelog
+terraform-aws-sns-to-cloudwatch-logs-lambda Changelog
+=====================================================
 
 All notable changes to this project will be documented in this file.
 
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+## Unreleased
+
+- Github Action for release-please
 
 ## [3.0.1] - 2020-08-08
 
