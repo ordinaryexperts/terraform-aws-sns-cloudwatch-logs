@@ -1,15 +1,14 @@
-# terraform-aws-sns-to-cloudwatch-logs-lambda
+terraform-aws-sns-cloudwatch-logs
+=================================
 
-[![Latest Release](https://img.shields.io/github/release/robertpeteuil/terraform-aws-sns-to-cloudwatch-logs-lambda.svg)](https://github.com/robertpeteuil/terraform-aws-sns-to-cloudwatch-logs-lambda) [![license](https://img.shields.io/github/license/robertpeteuil/terraform-aws-sns-to-cloudwatch-logs-lambda.svg?colorB=2067b8)](https://github.com/robertpeteuil/terraform-aws-sns-to-cloudwatch-logs-lambda)
+[![Latest Release](https://img.shields.io/github/release/jmcvetta/terraform-aws-sns-cloudwatch-logs.svg)](https://github.com/jmcvetta/terraform-aws-sns-cloudwatch-logs) [![license](https://img.shields.io/github/license/jmcvetta/terraform-aws-sns-cloudwatch-logs.svg?colorB=2067b8)](https://github.com/jmcvetta/terraform-aws-sns-cloudwatch-logs)
 
-`terraform-aws-sns-to-cloudwatch-logs-lambda` is a Terraform module to provision a Lambda Function which routes SNS messages to CloudWatch Logs
+`terraform-aws-sns-cloudwatch-logs` is a Terraform module to provision a Lambda
+Function which routes SNS messages to CloudWatch Logs
 
-- Terraform versions >= 0.12, use module `version >= "3.0.1"` (See exception)
-- Terraform versions <= 0.11, use module `version = "1.0.1"`
 
-> Exception: if using `var.aws_region` to specify deployment region, use `version = "2.0.1"`, until you can switch to provider aliases and [explicit provider passing](https://www.terraform.io/docs/configuration/modules.html#passing-providers-explicitly).
-
-## Terraform Module Features
+Terraform Module Features
+-------------------------
 
 This Module allows simple and rapid deployment
 
@@ -43,11 +42,10 @@ This Lambda Function forwards subject & body of SNS messages to CloudWatch Log G
 
 ## Usage
 
-``` ruby
+```hcl
 module "sns_logger" {
-  source            = "robertpeteuil/sns-to-cloudwatch-logs-lambda/aws"
-  version           = "3.0.1"     # Use with Terraform >= 0.12 (including 0.13)
-  # version           = "1.0.1"   # Latest version for Terraform <= 0.11
+  source            = "jmcvetta/sns-cloudwatch-logs/aws"
+  version           = "3.0.1"  # 
 
   sns_topic_name    = "projectx-logging"
   log_group_name    = "projectx"
@@ -81,3 +79,11 @@ module "sns_logger" {
 | lambda_timeout | Function time-out (seconds) | string | `3` | no |
 | lambda_mem_size | Function RAM assigned (MB) | string | `128` | no |
 | create_warmer_event | Create CloudWatch trigger event to prevent hibernation | string | `false` | no |
+
+
+
+History
+-------
+
+This module was derived from the [Trussworks fork](https://github.com/trussworks/terraform-aws-sns-to-cloudwatch-logs-lambda)
+of Robert Peteuil's [`terraform-aws-sns-to-cloudwatch-logs-lambda`](https://github.com/robertpeteuil/terraform-aws-sns-to-cloudwatch-logs-lambda).

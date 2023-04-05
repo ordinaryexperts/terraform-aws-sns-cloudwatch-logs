@@ -6,11 +6,6 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
-## Unreleased
-
-- Make variable `lambda_func_name` fully control the name of the Lambda
-  function.
-
 ## [3.0.1] - 2020-08-08
 
 - Clarification on changes for Terraform 0.13
