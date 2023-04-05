@@ -9,6 +9,7 @@ packages = [{include = "lambda_sns_cloudwatch_logs"}]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+watchtower = "^3.0.1"
 
 
 [build-system]
