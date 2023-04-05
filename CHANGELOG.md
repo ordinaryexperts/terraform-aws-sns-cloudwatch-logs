@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## 4.0.0 (2023-04-05)
+
+
+### Miscellaneous Chores
+
+* release 4.0.0 ([4526ee7](https://github.com/jmcvetta/terraform-aws-sns-cloudwatch-logs/commit/4526ee709559aec2b6324061496c64b90d902308))
+
 ## [3.0.1] - 2020-08-08
 
 - Clarification on changes for Terraform 0.13
