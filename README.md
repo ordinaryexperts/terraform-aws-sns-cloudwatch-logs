@@ -1,7 +1,7 @@
 terraform-aws-sns-cloudwatch-logs
 =================================
 
-[![Latest Release](https://img.shields.io/github/release/jmcvetta/terraform-aws-sns-cloudwatch-logs.svg)](https://github.com/jmcvetta/terraform-aws-sns-cloudwatch-logs) [![license](https://img.shields.io/github/license/jmcvetta/terraform-aws-sns-cloudwatch-logs.svg?colorB=2067b8)](https://github.com/jmcvetta/terraform-aws-sns-cloudwatch-logs)
+[![Latest Release](https://img.shields.io/github/release/ordinaryexperts/terraform-aws-sns-cloudwatch-logs.svg)](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs) [![license](https://img.shields.io/github/license/ordinaryexperts/terraform-aws-sns-cloudwatch-logs.svg?colorB=2067b8)](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs)
 
 `terraform-aws-sns-cloudwatch-logs` is a Terraform module to provision a Lambda
 Function which routes SNS messages to CloudWatch Logs
@@ -44,8 +44,8 @@ This Lambda Function forwards subject & body of SNS messages to CloudWatch Log G
 
 ```hcl
 module "sns_logger" {
-  source            = "jmcvetta/sns-cloudwatch-logs/aws"
-  version           = "3.0.1"  # 
+  source            = "ordinaryexperts/sns-cloudwatch-logs/aws"
+  version           = "4.0.0"
 
   sns_topic_name    = "projectx-logging"
   log_group_name    = "projectx"
