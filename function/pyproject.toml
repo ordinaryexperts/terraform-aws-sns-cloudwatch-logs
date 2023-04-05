@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "lambda-sns-cloudwatch-logs"
+version = "0.0.0"
+description = ""
+authors = ["Jason McVetta <jmcvetta@hey.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "lambda_sns_cloudwatch_logs"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+watchtower = "^3.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
