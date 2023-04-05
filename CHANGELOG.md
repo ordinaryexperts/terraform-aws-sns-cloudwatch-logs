@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [4.1.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v4.0.0...v4.1.0) (2023-04-05)
+
+
+### Features
+
+* Use Poetry for dependency management, and update Python lambda layer ([#5](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/5)) ([1c77fa8](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/1c77fa83581f5e9cbbe529a0791acd01b38f46c4))
+
 ## 4.0.0 (2023-04-05)
 
 
