@@ -12,6 +12,7 @@ python = "^3.8"
 watchtower = "^3.0.1"
 structlog = "^23.1.0"
 environs = "^9.5.0"
+pytz = "^2023.3"
 
 
 [tool.poetry.group.dev.dependencies]
