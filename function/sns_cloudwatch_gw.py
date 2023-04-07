@@ -11,27 +11,19 @@ env = environs.Env()
 log = structlog.stdlib.get_logger()
 
 
-def setup_cloudwatch_log_handler() -> watchtower.CloudWatchLogHandler:
-    """
-    setup_logging configures a CloudWatch log handler based on environment
-    variables.
+def main(event, context):
+    # Debug logging
+    log_level = env.log_level("log_level", logging.INFO)
+    structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(log_level))
 
-    :return: A configured CloudWatch log handler
-    """
+    cwLogger = logging.getLogger("cloudwatch")
+    cwLogger.setLevel(logging.INFO)
     cloudwatch_log_group = env.str("log_group")
     cloudwatch_log_stream = os.getenv("log_stream")
     cloudwatch_handler = watchtower.CloudWatchLogHandler(
         log_group=cloudwatch_log_group, stream_name=cloudwatch_log_stream
     )
-    log.addHandler(cloudwatch_handler)
-    return cloudwatch_handler
-
-
-def main(event, context):
-    log_level = env.log_level("log_level", logging.INFO)
-    structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(log_level))
-
-    cloudwatch_handler = setup_cloudwatch_log_handler()
+    cwLogger.addHandler(cloudwatch_handler)
 
     try:
         # FIXME: What if there are more than one record?
@@ -45,9 +37,9 @@ def main(event, context):
         body = event["Records"][0]["Sns"]["Message"]
 
         if subject:
-            log.info("{}\n{}".format(subject, body))
+            cwLogger.info("{}\n{}".format(subject, body))
         else:
-            log.info(body)
+            cwLogger.info(body)
 
         cloudwatch_handler.flush()
     else:
