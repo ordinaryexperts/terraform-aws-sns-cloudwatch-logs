@@ -29,7 +29,7 @@ def main(event, context):
         # FIXME: What if there are more than one record?
         message_source = event["Records"][0]["EventSource"]
     except KeyError:
-        log.warn("Unexpected event format", event=event)
+        log.warn("Unexpected event format", lambda_event=event)
         return
 
     if message_source == "aws:sns":
