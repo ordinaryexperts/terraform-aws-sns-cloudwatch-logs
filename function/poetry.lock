@@ -98,6 +98,24 @@ files = [
 ]
 
 [[package]]
+name = "structlog"
+version = "23.1.0"
+description = "Structured Logging for Python"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "structlog-23.1.0-py3-none-any.whl", hash = "sha256:79b9e68e48b54e373441e130fa447944e6f87a05b35de23138e475c05d0f7e0e"},
+    {file = "structlog-23.1.0.tar.gz", hash = "sha256:270d681dd7d163c11ba500bc914b2472d2b50a8ef00faa999ded5ff83a2f906b"},
+]
+
+[package.extras]
+dev = ["structlog[docs,tests,typing]"]
+docs = ["furo", "myst-parser", "sphinx", "sphinx-notfound-page", "sphinxcontrib-mermaid", "twisted"]
+tests = ["coverage[toml]", "freezegun (>=0.2.8)", "pretend", "pytest (>=6.0)", "pytest-asyncio (>=0.17)", "simplejson"]
+typing = ["mypy", "rich", "twisted"]
+
+[[package]]
 name = "urllib3"
 version = "1.26.15"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
@@ -135,4 +153,4 @@ tests = ["build", "coverage", "flake8", "mypy", "pyyaml", "wheel"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "3a87e30884c4f955d0296ed649977c1e58c76a989f33aac14489dfd40ea3efc7"
+content-hash = "87d5f5ae0a8eee8133da18544cd1f20be1c4c41f5eb7922521fc0bacf01c9257"
