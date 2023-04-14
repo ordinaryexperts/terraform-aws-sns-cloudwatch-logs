@@ -16,7 +16,7 @@ log = structlog.stdlib.get_logger()
 TIMESTAMP = datetime.datetime.now(pytz.utc)
 
 
-def main(event, context):
+def handler(event, context):
     # Debug logging
     log_level = env.log_level("log_level", logging.INFO)
     structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(log_level))

@@ -56,7 +56,7 @@ resource "aws_lambda_function" "sns_cloudwatchlog" {
   role    = aws_iam_role.lambda_cloudwatch_logs.arn
 
   runtime     = var.lambda_runtime
-  handler     = "sns_cloudwatch_gw.main"
+  handler     = "sns_cloudwatch_gw.handler"
   timeout     = var.lambda_timeout
   memory_size = var.lambda_mem_size
 
