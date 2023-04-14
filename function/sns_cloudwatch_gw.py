@@ -20,9 +20,7 @@ def main(event, context):
     cwLogger.setLevel(logging.INFO)
     cloudwatch_log_group = env.str("log_group")
     cloudwatch_log_stream = os.getenv("log_stream")
-    cloudwatch_handler = watchtower.CloudWatchLogHandler(
-        log_group=cloudwatch_log_group, stream_name=cloudwatch_log_stream
-    )
+    cloudwatch_handler = watchtower.CloudWatchLogHandler(log_group=cloudwatch_log_group)
     cwLogger.addHandler(cloudwatch_handler)
 
     try:
