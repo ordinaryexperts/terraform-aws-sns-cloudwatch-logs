@@ -33,14 +33,16 @@ def main(event, context):
         return
 
     if message_source == "aws:sns":
-        subject = event["Records"][0]["Sns"]["Subject"]
+        # subject = event["Records"][0]["Sns"]["Subject"]
+        # body = event["Records"][0]["Sns"]["Message"]
+        #
+        # if subject:
+        #     cwLogger.info("{}\n{}".format(subject, body))
+        # else:
+        #     cwLogger.info(body)
+
         body = event["Records"][0]["Sns"]["Message"]
-
-        if subject:
-            cwLogger.info("{}\n{}".format(subject, body))
-        else:
-            cwLogger.info(body)
-
+        cwLogger.info(body)
         cloudwatch_handler.flush()
     else:
         log.warn("Message source is not aws:sns", event=event)
