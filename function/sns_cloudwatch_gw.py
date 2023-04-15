@@ -13,7 +13,6 @@ env = environs.Env()
 log = structlog.stdlib.get_logger()
 
 
-TIMESTAMP = datetime.datetime.now(pytz.utc)
 
 
 def handler(event, context):
@@ -24,7 +23,8 @@ def handler(event, context):
     cwLogger = logging.getLogger("cloudwatch")
     cwLogger.setLevel(logging.INFO)
     cloudwatch_log_group = env.str("log_group")
-    cloudwatch_log_stream = TIMESTAMP.strftime("%Y-%m-%d/%H/%M/%S")
+    now = datetime.datetime.now(pytz.utc)
+    cloudwatch_log_stream = now.strftime("%Y-%m-%d/%H/%M/%S")
     cloudwatch_handler = watchtower.CloudWatchLogHandler(
         log_group=cloudwatch_log_group, stream_name=cloudwatch_log_stream
     )
