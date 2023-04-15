@@ -24,7 +24,7 @@ def handler(event, context):
     cwLogger.setLevel(logging.INFO)
     cloudwatch_log_group = env.str("log_group")
     now = datetime.datetime.now(pytz.utc)
-    cloudwatch_log_stream = now.strftime("%Y-%m-%d/%H/%M/%S")
+    cloudwatch_log_stream = now.strftime("%Y-%m-%d/%H/%M")
     cloudwatch_handler = watchtower.CloudWatchLogHandler(
         log_group=cloudwatch_log_group, stream_name=cloudwatch_log_stream
     )
