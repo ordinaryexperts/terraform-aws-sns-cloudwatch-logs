@@ -38,7 +38,7 @@ def handler(event, context):
         return
 
     if message_source == "aws:sns":
-        body = event["Records"][0]["Sns"]["Message"]
+        body = event["Records"][0]["Sns"]
         cwLogger.info(body)
         cloudwatch_handler.flush()
     else:
