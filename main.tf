@@ -39,7 +39,7 @@ data "archive_file" "lambda_function" {
 }
 
 locals {
-  dynamic_description = "Routes SNS topic '${var.sns_topic_name}' to CloudWatch group '${var.log_group_name}' and stream '${var.log_stream_name}'"
+  dynamic_description = "Routes SNS topic '${var.sns_topic_name}' to CloudWatch group '${var.log_group_name}'"
 }
 
 # create lambda using function only zip on top of base layer
@@ -56,14 +56,13 @@ resource "aws_lambda_function" "sns_cloudwatchlog" {
   role    = aws_iam_role.lambda_cloudwatch_logs.arn
 
   runtime     = var.lambda_runtime
-  handler     = "sns_cloudwatch_gw.main"
+  handler     = "sns_cloudwatch_gw.handler"
   timeout     = var.lambda_timeout
   memory_size = var.lambda_mem_size
 
   environment {
     variables = {
       log_group  = var.log_group_name
-      log_stream = var.log_stream_name
     }
   }
 
@@ -103,18 +102,6 @@ resource "aws_cloudwatch_log_group" "sns_logged_item_group" {
 data "aws_cloudwatch_log_group" "sns_logged_item_group" {
   count = var.create_log_group ? 0 : 1
   name  = var.log_group_name
-}
-
-# -----------------------------------------------------------------
-# CLOUDWATCH LOG STREAM
-#   created new log stream (if create_log_stream set)
-# -----------------------------------------------------------------
-
-# create stream in log_group previously created or specified
-resource "aws_cloudwatch_log_stream" "sns_logged_item_stream" {
-  count          = var.create_log_stream ? 1 : 0
-  name           = var.log_stream_name
-  log_group_name = var.create_log_group ? aws_cloudwatch_log_group.sns_logged_item_group[0].name : var.log_group_name
 }
 
 # -----------------------------------------------------------------
