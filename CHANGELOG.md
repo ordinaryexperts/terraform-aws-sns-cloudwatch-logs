@@ -6,6 +6,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [5.0.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v4.1.0...v5.0.0) (2023-04-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* Automatic log stream name ([#9](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/9))
+
+### Features
+
+* Automatic log stream name ([#9](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/9)) ([25e6ec7](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/25e6ec7f999727786ccf13832358abc97655e08f))
+
 ## [4.1.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v4.0.0...v4.1.0) (2023-04-05)
 
 
