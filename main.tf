@@ -62,7 +62,7 @@ resource "aws_lambda_function" "sns_cloudwatchlog" {
 
   environment {
     variables = {
-      log_group  = var.log_group_name
+      LOG_GROUP  = var.log_group_name
     }
   }
 
