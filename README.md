@@ -76,10 +76,10 @@ module "sns_logger" {
 History
 -------
 
-This module was derived from the [Trussworks fork](trussworks) of [Robert
-Peteuil](peteuil)'s [`terraform-aws-sns-to-cloudwatch-logs-lambda`](original).
+This module was derived from the [Trussworks fork] of [Robert Peteuil]'s
+[`terraform-aws-sns-to-cloudwatch-logs-lambda`][original].
 
 
-[trussworks]: https://github.com/trussworks/terraform-aws-sns-to-cloudwatch-logs-lambda
-[peteuil]: https://github.com/robertpeteuil
+[Trussworks fork]: https://github.com/trussworks/terraform-aws-sns-to-cloudwatch-logs-lambda
+[Robert Peteuil]: https://github.com/robertpeteuil
 [original]: https://github.com/robertpeteuil/terraform-aws-sns-to-cloudwatch-logs-lambda
