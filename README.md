@@ -13,7 +13,7 @@ Terraform Module Features
 This Module allows simple and rapid deployment
 
 - Creates Lambda function, Lambda Layer, IAM Policies, Triggers, and Subscriptions
-- Creates (or use existing) SNS Topic, CloudWatch Log Group and Log Group Stream
+- Creates (or use existing) SNS Topic and CloudWatch Log Group
 - Options:
   - Create CloudWatch Event to prevent Function hibernation
   - Set Log Group retention period
@@ -31,7 +31,7 @@ This Module allows simple and rapid deployment
 
 ## SNS to CloudWatch Logs Features
 
-This Lambda Function forwards subject & body of SNS messages to CloudWatch Log Group Stream
+This Lambda Function forwards SNS messages to a CloudWatch Log Group.  
 
 - Enhances the value of CloudWatch Logs by enabling easy entry creation from any service, function and script that can send SNS notifications
 - Enables cloud-init, bootstraps and functions to easily write log entries to a centralized CloudWatch Log
@@ -45,7 +45,7 @@ This Lambda Function forwards subject & body of SNS messages to CloudWatch Log G
 ```hcl
 module "sns_logger" {
   source            = "ordinaryexperts/sns-cloudwatch-logs/aws"
-  version           = "5.0.0"
+  version           = "5.1.0"
 
   sns_topic_name    = "projectx-logging"
   log_group_name    = "projectx"
