@@ -22,12 +22,6 @@ This Module allows simple and rapid deployment
 - Optionally create custom Lambda Layer zip using [build-lambda-layer-python](https://github.com/robertpeteuil/build-lambda-layer-python)
   - Enables adding/changing dependencies
   - Enables compiling for different version of Python
-- **Breaking Changes** in `3.0.0` - required to enable new Terraform 0.13 module arguments `for_each`, `count`, and `depends_on`
-  - The module's internal AWS `provider` block has been removed
-  - `var.aws_region` has been removed and can't be used to set a target region
-  - By default, modules inherit the `region` of the calling module's Provider
-  - To specify alternate regions, use provider aliases and [expicit provider passing](https://www.terraform.io/docs/configuration/modules.html#passing-providers-explicitly)
-  - Additional information on module considerations can be found in the docs for [Provider Configuration in Modules with 0.13](https://www.terraform.io/docs/configuration/modules.html#legacy-shared-modules-with-provider-configurations)
 
 ## SNS to CloudWatch Logs Features
 
