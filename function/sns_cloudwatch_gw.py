@@ -13,8 +13,6 @@ env = environs.Env()
 log = structlog.stdlib.get_logger()
 
 
-
-
 def handler(event, context):
     # Debug logging
     log_level = env.log_level("log_level", logging.INFO)
@@ -46,3 +44,7 @@ def handler(event, context):
 
     # FIXME: What should we return?
     return
+
+
+if __name__ == "__main__":
+    handler({}, None)

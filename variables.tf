@@ -12,11 +12,6 @@ variable "log_group_name" {
   description = "Name of CloudWatch Log Group created or used (if previously created)."
 }
 
-variable "log_stream_name" {
-  type        = string
-  description = "Name of CloudWatch Log Stream created or used (if previously created).  If using an existing stream it must exist in the Log group specified in 'log_group_name'."
-}
-
 # -----------------------------------------------------------------
 # VARIABLES DEFINITIONS WITH DEFAULT VALUES
 # -----------------------------------------------------------------
@@ -31,11 +26,6 @@ variable "create_sns_topic" {
 variable "create_log_group" {
   default     = true
   description = "Boolean flag that determines if log group, 'log_group_name' is created.  If 'false' it uses an existing group of that name."
-}
-
-variable "create_log_stream" {
-  default     = true
-  description = "Boolean flag that determines if log stream, 'log_stream_name' is created. If 'false' it uses an existing stream of that name."
 }
 
 variable "log_group_retention_days" {
