@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [5.1.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v5.0.0...v5.1.0) (2023-04-17)
+
+
+### Features
+
+* capitalize env var LOG_GROUP ([#12](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/12)) ([efca49b](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/efca49b191c42e464e7a41b54f6b194bd833a918))
+
 ## [5.0.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v4.1.0...v5.0.0) (2023-04-17)
 
 
