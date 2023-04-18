@@ -39,7 +39,7 @@ This Lambda Function forwards SNS messages to a CloudWatch Log Group.
 ```hcl
 module "sns_logger" {
   source            = "ordinaryexperts/sns-cloudwatch-logs/aws"
-  version           = "5.1.0"
+  version           = "5.1"
 
   sns_topic_name    = "projectx-logging"
   log_group_name    = "projectx"
