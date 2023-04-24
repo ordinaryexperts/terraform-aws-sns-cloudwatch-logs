@@ -3,18 +3,18 @@
 # -------------------------------------------------------------------------------------
 
 locals {
-  policy_name = "lambda-${lower(var.lambda_func_name)}-${local.region}"
+  iam_role_name = "lambda-${lower(var.lambda_func_name)}-${local.region}"
 }
 
 # Create IAM role
 resource "aws_iam_role" "lambda_cloudwatch_logs" {
-  name               = local.policy_name
+  name               = local.iam_role_name
   assume_role_policy = data.aws_iam_policy_document.lambda_cloudwatch_logs.json
 }
 
 # Add base Lambda Execution policy
 resource "aws_iam_role_policy" "lambda_cloudwatch_logs_polcy" {
-  name   = local.policy_name
+  name   = local.iam_role_name
   role   = aws_iam_role.lambda_cloudwatch_logs.id
   policy = data.aws_iam_policy_document.lambda_cloudwatch_logs_policy.json
 }
