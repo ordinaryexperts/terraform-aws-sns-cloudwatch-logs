@@ -1,3 +1,5 @@
 locals {
-  lambda_prefix_name = "lambda-${lower(var.lambda_func_name)}"
+  region = data.aws_region.current.name
 }
+
+data "aws_region" "current" {}
