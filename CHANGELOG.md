@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [5.2.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v5.1.0...v5.2.0) (2023-04-24)
+
+
+### Features
+
+* Include region in IAM role name ([#17](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/17)) ([ea96bea](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/ea96beaec3afc96664d1db910236fd085610a9c8))
+
 ## [5.1.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v5.0.0...v5.1.0) (2023-04-17)
 
 
