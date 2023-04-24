@@ -9,6 +9,9 @@ import watchtower
 import datetime
 import pytz
 
+DEFAULT_LOGSTREAM_FORMAT = "%Y-%m-%d/%H-%M"
+
+
 env = environs.Env()
 log = structlog.stdlib.get_logger()
 
@@ -16,13 +19,14 @@ log = structlog.stdlib.get_logger()
 def handler(event, context):
     # Debug logging
     log_level = env.log_level("LOG_LEVEL", logging.INFO)
+    logstream_format = env.str("LOGSTREAM_FORMAT", DEFAULT_LOGSTREAM_FORMAT)
     structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(log_level))
 
     cwLogger = logging.getLogger("cloudwatch")
     cwLogger.setLevel(logging.INFO)
     cloudwatch_log_group = env.str("LOG_GROUP")
     now = datetime.datetime.now(pytz.utc)
-    cloudwatch_log_stream = now.strftime("%Y-%m-%d/%H-%M")
+    cloudwatch_log_stream = now.strftime(logstream_format)
     cloudwatch_handler = watchtower.CloudWatchLogHandler(
         log_group=cloudwatch_log_group, stream_name=cloudwatch_log_stream
     )
