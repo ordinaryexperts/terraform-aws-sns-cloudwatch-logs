@@ -16,7 +16,8 @@ jobs:
 
       - name: Check Format
         id: fmt
-        run: terraform fmt -check || (echo Improperly formatted Terraform code && exit 3)
+#        run: terraform fmt -check || (echo Improperly formatted Terraform code && exit 3)
+        run: terraform fmt -check
         continue-on-error: false
 
 
