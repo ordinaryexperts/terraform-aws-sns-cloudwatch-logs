@@ -1,0 +1,37 @@
+name: Terraform
+on:
+  push:
+
+jobs:
+
+  fmt:
+    name: Terraform Format
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: hashicorp/setup-terraform@v2
+
+      - uses: actions/checkout@v3
+
+      - name: Check Format
+        id: fmt
+        run: terraform fmt -check || (echo Improperly formatted Terraform code && exit 3)
+        continue-on-error: false
+
+
+  validate:
+    name: Terraform Validate
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - uses: hashicorp/setup-terraform@v2
+
+      - uses: actions/checkout@v3
+
+      - name: Validate
+        id: validate
+        run: terraform validate
+        continue-on-error: false
+
