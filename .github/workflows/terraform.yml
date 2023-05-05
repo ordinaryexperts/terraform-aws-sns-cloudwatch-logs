@@ -30,6 +30,11 @@ jobs:
 
       - uses: actions/checkout@v3
 
+      - name: Init
+        id: init
+        run: terraform init
+        continue-on-error: false
+
       - name: Validate
         id: validate
         run: terraform validate
