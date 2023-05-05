@@ -1,11 +1,11 @@
-name: Terraform
+name: Terraform Validation
 on:
   push:
 
 jobs:
 
   fmt:
-    name: Terraform Format
+    name: Format Check
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,7 @@ jobs:
 
 
   validate:
-    name: Terraform Validate
+    name: Validate
     runs-on: ubuntu-latest
 
     steps:
