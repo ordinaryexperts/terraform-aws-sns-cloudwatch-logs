@@ -1,3 +1,5 @@
+name: Release
+
 on:
   push:
     branches:
@@ -7,10 +9,10 @@ permissions:
   contents: write
   pull-requests: write
 
-name: release-please
 
 jobs:
   release-please:
+    name: release-please
     runs-on: ubuntu-latest
     steps:
       - uses: google-github-actions/release-please-action@v3
