@@ -18,7 +18,7 @@ resource "aws_lambda_function" "sns_cloudwatchlog" {
   layers = [aws_lambda_layer_version.logging_base.arn]
 
   function_name = var.lambda_func_name
-  description   = length(var.lambda_description) > 0 ? var.lambda_description : local.dynamic_description
+  description   = var.lambda_description != null ? var.lambda_description : local.dynamic_description
 
   filename         = "${path.module}/lambda.zip"
   source_code_hash = data.archive_file.lambda_function.output_base64sha256
