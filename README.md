@@ -3,8 +3,9 @@ terraform-aws-sns-cloudwatch-logs
 
 [![Latest Release](https://img.shields.io/github/release/ordinaryexperts/terraform-aws-sns-cloudwatch-logs.svg)](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs) [![license](https://img.shields.io/github/license/ordinaryexperts/terraform-aws-sns-cloudwatch-logs.svg?colorB=2067b8)](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs)
 
-`terraform-aws-sns-cloudwatch-logs` is a Terraform module to provision a Lambda
-Function which routes SNS messages to CloudWatch Logs
+`terraform-aws-sns-cloudwatch-logs` is a Terraform module for provisioning a
+Lambda function that routes SNS messages to CloudWatch Logs.
+
 
 
 Terraform Module Features
@@ -23,7 +24,10 @@ This Module allows simple and rapid deployment
   - Enables adding/changing dependencies
   - Enables compiling for different version of Python
 
-## SNS to CloudWatch Logs Features
+
+
+SNS to CloudWatch Logs Features
+-------------------------------
 
 This Lambda Function forwards SNS messages to a CloudWatch Log Group.  
 
@@ -34,7 +38,10 @@ This Lambda Function forwards SNS messages to a CloudWatch Log Group.
 - Easily add instrumentation to scripts: `aws sns publish --topic-arn $TOPIC_ARN --message $LOG_ENTRY`
   - Use with IAM instance policy requires `--region $AWS_REGION` parameter
 
-## Usage
+
+
+Usage
+-----
 
 ```hcl
 module "sns_logger" {
@@ -48,14 +55,20 @@ module "sns_logger" {
 
 > NOTE: Make sure you are using [version pinning](https://www.terraform.io/docs/modules/usage.html#module-versions) to avoid unexpected changes when the module is updated.
 
-## Required Inputs
+
+
+Required Inputs
+---------------
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
 | sns_topic_name | Name of SNS Topic to be logged by Gateway | string | - | yes |
 | log_group_name | Name of CloudWatch Log Group | string | - | yes |
 
-## Optional Inputs
+
+
+Optional Inputs
+---------------
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
