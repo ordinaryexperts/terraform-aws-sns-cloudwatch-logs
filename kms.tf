@@ -1,6 +1,6 @@
 resource "aws_kms_key" "lambda" {
   description             = "KMS key for Lambda function ${var.lambda_func_name}"
-  deletion_window_in_days = 0
+  deletion_window_in_days = 7
   enable_key_rotation     = true
 
   policy = jsonencode({
