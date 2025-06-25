@@ -9,10 +9,11 @@ sort:
 
 sections:
   hide:
-    - requirements
+    - data-sources
+    - modules
     - providers
     - resources
-    - data-sources
+#    - requirements
 
 output:
   file: README.md
