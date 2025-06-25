@@ -43,13 +43,4 @@ data "aws_iam_policy_document" "lambda_cloudwatch_logs_policy" {
     resources = ["*"]
   }
 
-  statement {
-    actions = [
-      "kms:Decrypt"
-    ]
-
-    resources = [
-      data.aws_kms_key.lambda.arn
-    ]
-  }
 }
