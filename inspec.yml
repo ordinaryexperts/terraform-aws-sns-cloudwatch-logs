@@ -1,0 +1,55 @@
+name: terraform-aws-sns-cloudwatch-logs
+title: SNS to CloudWatch Logs Lambda Gateway Tests
+maintainer: Terraform Module Tests
+copyright: Terraform Module Tests
+copyright_email: test@example.com
+license: Apache-2.0
+summary: Cinc Auditor profile to test terraform-aws-sns-cloudwatch-logs module
+version: 1.0.0
+supports:
+  - platform-name: aws
+
+depends:
+  - name: inspec-aws
+    git: https://github.com/inspec/inspec-aws.git
+    tag: v1.83.0
+
+inputs:
+  - name: sns_topic_name
+    type: string
+    required: true
+    description: Name of SNS Topic logging to CloudWatch Log
+  - name: log_group_name
+    type: string
+    required: true
+    description: Name of CloudWatch Log Group
+  - name: lambda_func_name
+    type: string
+    required: false
+    value: SNStoCloudWatchLogs
+    description: Name of Lambda Function
+  - name: create_sns_topic
+    type: boolean
+    required: false
+    value: true
+    description: Whether SNS topic was created by module
+  - name: create_log_group
+    type: boolean
+    required: false
+    value: true
+    description: Whether log group was created by module
+  - name: lambda_runtime
+    type: string
+    required: false
+    value: python3.8
+    description: Lambda runtime
+  - name: lambda_timeout
+    type: numeric
+    required: false
+    value: 3
+    description: Lambda timeout in seconds
+  - name: lambda_mem_size
+    type: numeric
+    required: false
+    value: 128
+    description: Lambda memory size in MB

@@ -1,0 +1,14 @@
+# Default attributes for terraform-aws-sns-cloudwatch-logs InSpec profile
+# These values should match your Terraform outputs
+
+# Required inputs
+sns_topic_name: "example-sns-topic"
+log_group_name: "/aws/lambda/sns-cloudwatch-logs"
+
+# Optional inputs with defaults
+lambda_func_name: "SNStoCloudWatchLogs"
+create_sns_topic: true
+create_log_group: true
+lambda_runtime: "python3.8"
+lambda_timeout: 3
+lambda_mem_size: 128
