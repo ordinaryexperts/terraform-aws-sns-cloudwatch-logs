@@ -34,6 +34,6 @@ resource "aws_kms_key" "lambda" {
 }
 
 resource "aws_kms_alias" "lambda" {
-  name          = "alias/${var.lambda_func_name}-key"
+  name          = "alias/${var.lambda_func_name}"
   target_key_id = aws_kms_key.lambda.key_id
 }
