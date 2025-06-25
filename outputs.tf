@@ -9,8 +9,7 @@ output "lambda_name" {
 
 output "lambda_arn" {
   description = "ARN of created Lambda Function."
-  value       = var.lambda_publish_func ? aws_lambda_function.sns_cloudwatchlog.qualified_arn :
-    aws_lambda_function.sns_cloudwatchlog.arn
+  value       = var.lambda_publish_func ? aws_lambda_function.sns_cloudwatchlog.qualified_arn : aws_lambda_function.sns_cloudwatchlog.arn
 }
 
 output "lambda_version" {
@@ -50,8 +49,7 @@ output "log_group_name" {
 
 output "log_group_arn" {
   description = "ARN of CloudWatch Log Group."
-  value       = var.create_log_group ? aws_cloudwatch_log_group.sns_logged_item_group[0].arn :
-    data.aws_cloudwatch_log_group.sns_logged_item_group[0].arn
+  value       = var.create_log_group ? aws_cloudwatch_log_group.sns_logged_item_group[0].arn : data.aws_cloudwatch_log_group.sns_logged_item_group[0].arn
 }
 
 output "cloudwatch_event_rule_arn" {
