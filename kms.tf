@@ -1,13 +1,13 @@
 resource "aws_kms_key" "lambda" {
   description             = "KMS key for Lambda function ${var.lambda_func_name}"
-  deletion_window_in_days = 7
+  deletion_window_in_days = 0
   enable_key_rotation     = true
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
       {
-        Sid    = "Enable IAM User Permissions"
+        Sid    = "Allow Root Account Full KMS Access"
         Effect = "Allow"
         Principal = {
           AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
@@ -16,7 +16,7 @@ resource "aws_kms_key" "lambda" {
         Resource = "*"
       },
       {
-        Sid    = "Allow Lambda Execution Role"
+        Sid    = "Allow Lambda Role to Decrypt and Describe Key"
         Effect = "Allow"
         Principal = {
           AWS = aws_iam_role.lambda_cloudwatch_logs.arn
