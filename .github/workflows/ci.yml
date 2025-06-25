@@ -1,0 +1,93 @@
+name: CI
+
+
+on:
+  pull_request:
+    types: [ opened, synchronize, reopened, ready_for_review ]
+  workflow_dispatch:
+  schedule:
+    # Scheduled runs ensure we are alerted when new checks are added to Checkov
+    - cron: '20 4 * * *'
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+
+permissions:
+  contents: read # for actions/checkout to fetch code
+  #security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
+
+
+jobs:
+
+  changed:
+    runs-on: ubuntu-latest  # windows-latest || macos-latest
+    name: Collect changes
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft != true }}
+    outputs:
+      tf: ${{ steps.changed-files.outputs.tf_all_changed_files }}
+      tf_any_modified: ${{ steps.changed-files.outputs.tf_any_modified }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - id: changed-files
+        uses: tj-actions/changed-files@v46
+        with:
+          dir_names: 'true'
+          matrix: 'true'
+          files_yaml: |
+            tf:
+              - ./**/*.tf
+
+  fmt:
+    name: Terraform Fmt
+    needs: changed
+    if: "${{ needs.changed.outputs.tf_any_modified == 'true' }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: hashicorp/setup-terraform@v2
+      - uses: actions/checkout@v3
+      - name: Terraform fmt
+        id: fmt
+        run: terraform fmt -check -recursive
+        continue-on-error: false
+
+  trufflehog:
+    name: TruffleHog
+    needs: changed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Secret Scanning
+        uses: trufflesecurity/trufflehog@main
+
+  docs:
+    name: Generate TF module docs
+    needs: changed
+    if: "${{ needs.changed.outputs.tf_any_modified == 'true' }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          token: ${{ secrets.AUTO_RELEASE_TOKEN }}
+
+      - name: Render terraform docs and push changes back to PR
+        uses: terraform-docs/gh-actions@main
+        with:
+          working-dir: .
+          config-file: .terraform-docs.yml
+          git-push: "true"
+
+  fixme:
+    name: FIXME check
+    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft != true }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: bbugh/action-fixme-check@v1.1.0
