@@ -1,13 +1,21 @@
 title 'SNS to CloudWatch Logs Lambda Gateway'
 
+sns_topic_name = input('sns_topic_name')
+log_group_name = input('log_group_name')
+lambda_func_name = input('lambda_func_name')
+lambda_runtime = input('lambda_runtime')
+lambda_timeout = input('lambda_timeout')
+lambda_mem_size = input('lambda_mem_size')
+create_warmer_event = input('create_warmer_event')
+
 control 'sns-topic' do
   title 'SNS Topic Configuration'
   desc 'Verify SNS topic exists and is properly configured'
   impact 1.0
   
-  describe aws_sns_topic(input('sns_topic_name')) do
+  describe aws_sns_topic(sns_topic_name) do
     it { should exist }
-    its('display_name') { should eq input('sns_topic_name') }
+    its('display_name') { should eq sns_topic_name }
   end
 end
 
@@ -16,9 +24,9 @@ control 'cloudwatch-log-group' do
   desc 'Verify CloudWatch log group exists and is properly configured'
   impact 1.0
   
-  describe aws_cloudwatch_log_group(input('log_group_name')) do
+  describe aws_cloudwatch_log_group(log_group_name) do
     it { should exist }
-    its('log_group_name') { should eq input('log_group_name') }
+    its('log_group_name') { should eq log_group_name }
   end
 end
 
@@ -27,12 +35,12 @@ control 'lambda-function' do
   desc 'Verify Lambda function exists and is properly configured'
   impact 1.0
   
-  describe aws_lambda_function(input('lambda_func_name')) do
+  describe aws_lambda_function(lambda_func_name) do
     it { should exist }
-    its('function_name') { should eq input('lambda_func_name') }
-    its('runtime') { should eq input('lambda_runtime') }
-    its('timeout') { should eq input('lambda_timeout') }
-    its('memory_size') { should eq input('lambda_mem_size') }
+    its('function_name') { should eq lambda_func_name }
+    its('runtime') { should eq lambda_runtime }
+    its('timeout') { should eq lambda_timeout }
+    its('memory_size') { should eq lambda_mem_size }
     its('handler') { should eq 'sns_cloudwatch_gw.handler' }
     its('state') { should eq 'Active' }
   end
@@ -43,7 +51,7 @@ control 'lambda-iam-role' do
   desc 'Verify Lambda IAM role exists and has proper assume role policy'
   impact 1.0
   
-  lambda_function = aws_lambda_function(input('lambda_func_name'))
+  lambda_function = aws_lambda_function(lambda_func_name)
   role_name = lambda_function.role.split('/').last
   
   describe aws_iam_role(role_name) do
@@ -58,7 +66,7 @@ control 'lambda-iam-role-policy' do
   desc 'Verify Lambda IAM role has proper CloudWatch Logs permissions'
   impact 1.0
   
-  lambda_function = aws_lambda_function(input('lambda_func_name'))
+  lambda_function = aws_lambda_function(lambda_func_name)
   role_name = lambda_function.role.split('/').last
   
   describe aws_iam_role_policy(role_name: role_name, policy_name: role_name) do
@@ -74,8 +82,8 @@ control 'sns-lambda-subscription' do
   desc 'Verify SNS topic is subscribed to Lambda function'
   impact 1.0
   
-  lambda_function = aws_lambda_function(input('lambda_func_name'))
-  sns_topic_arn = aws_sns_topic(input('sns_topic_name')).arn
+  lambda_function = aws_lambda_function(lambda_func_name)
+  sns_topic_arn = aws_sns_topic(sns_topic_name).arn
   
   describe aws_sns_subscription(sns_topic_arn) do
     it { should exist }
@@ -89,7 +97,7 @@ control 'lambda-permission' do
   desc 'Verify Lambda function has permission to be invoked by SNS'
   impact 1.0
   
-  lambda_function = aws_lambda_function(input('lambda_func_name'))
+  lambda_function = aws_lambda_function(lambda_func_name)
   
   describe aws_lambda_permission(function_name: lambda_function.function_name, statement_id: 'AllowExecutionFromSNS') do
     it { should exist }
@@ -103,7 +111,7 @@ control 'lambda-layers' do
   desc 'Verify Lambda function has expected layers'
   impact 0.5
   
-  describe aws_lambda_function(input('lambda_func_name')) do
+  describe aws_lambda_function(lambda_func_name) do
     it { should exist }
     its('layers.count') { should be >= 1 }
   end
@@ -114,9 +122,9 @@ control 'lambda-environment-variables' do
   desc 'Verify Lambda function has required environment variables'
   impact 1.0
   
-  describe aws_lambda_function(input('lambda_func_name')) do
+  describe aws_lambda_function(lambda_func_name) do
     it { should exist }
-    its('environment.variables.LOG_GROUP') { should eq input('log_group_name') }
+    its('environment.variables.LOG_GROUP') { should eq log_group_name }
   end
 end
 
@@ -125,7 +133,7 @@ control 'lambda-kms-encryption' do
   desc 'Verify Lambda function is encrypted with KMS'
   impact 0.5
   
-  describe aws_lambda_function(input('lambda_func_name')) do
+  describe aws_lambda_function(lambda_func_name) do
     it { should exist }
     its('kms_key_arn') { should_not be_nil }
     its('kms_key_arn') { should_not be_empty }
@@ -137,7 +145,7 @@ control 'kms-key' do
   desc 'Verify KMS key exists and is properly configured'
   impact 1.0
   
-  lambda_function = aws_lambda_function(input('lambda_func_name'))
+  lambda_function = aws_lambda_function(lambda_func_name)
   kms_key_id = lambda_function.kms_key_arn.split('/').last
   
   describe aws_kms_key(kms_key_id) do
@@ -151,7 +159,7 @@ control 'kms-alias' do
   desc 'Verify KMS alias exists for Lambda function'
   impact 0.5
   
-  alias_name = "alias/#{input('lambda_func_name')}"
+  alias_name = "alias/#{lambda_func_name}"
   
   describe aws_kms_alias(alias_name) do
     it { should exist }
@@ -163,13 +171,13 @@ control 'lambda-layer' do
   desc 'Verify Lambda layer exists and is properly configured'
   impact 1.0
   
-  lambda_function = aws_lambda_function(input('lambda_func_name'))
+  lambda_function = aws_lambda_function(lambda_func_name)
   layer_arn = lambda_function.layers.first
   
   if layer_arn
     describe aws_lambda_layer_version(layer_arn) do
       it { should exist }
-      its('compatible_runtimes') { should include input('lambda_runtime') }
+      its('compatible_runtimes') { should include lambda_runtime }
     end
   end
 end
@@ -179,9 +187,9 @@ control 'cloudwatch-warmer-event' do
   desc 'Verify CloudWatch event rule exists when warmer is enabled'
   impact 0.5
   
-  only_if { input('create_warmer_event') }
+  only_if { create_warmer_event }
   
-  event_rule_name = "sns-logger-warmer-#{input('sns_topic_name')}"
+  event_rule_name = "sns-logger-warmer-#{sns_topic_name}"
   
   describe aws_cloudwatch_event_rule(event_rule_name) do
     it { should exist }
@@ -195,10 +203,10 @@ control 'cloudwatch-warmer-target' do
   desc 'Verify CloudWatch event target points to Lambda function when warmer is enabled'
   impact 0.5
   
-  only_if { input('create_warmer_event') }
+  only_if { create_warmer_event }
   
-  event_rule_name = "sns-logger-warmer-#{input('sns_topic_name')}"
-  lambda_function = aws_lambda_function(input('lambda_func_name'))
+  event_rule_name = "sns-logger-warmer-#{sns_topic_name}"
+  lambda_function = aws_lambda_function(lambda_func_name)
   
   describe aws_cloudwatch_event_target(rule_name: event_rule_name, target_id: 'Lambda') do
     it { should exist }
@@ -211,9 +219,9 @@ control 'lambda-permission-warmer' do
   desc 'Verify Lambda function has permission to be invoked by CloudWatch Events when warmer is enabled'
   impact 0.5
   
-  only_if { input('create_warmer_event') }
+  only_if { create_warmer_event }
   
-  describe aws_lambda_permission(function_name: input('lambda_func_name'), statement_id: 'AllowExecutionFromCloudWatch') do
+  describe aws_lambda_permission(function_name: lambda_func_name, statement_id: 'AllowExecutionFromCloudWatch') do
     it { should exist }
     its('action') { should eq 'lambda:InvokeFunction' }
     its('principal') { should eq 'events.amazonaws.com' }
