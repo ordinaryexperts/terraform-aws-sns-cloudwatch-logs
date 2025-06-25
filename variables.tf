@@ -75,5 +75,5 @@ variable "lambda_runtime" {
 
 variable "tags" {
   description = "A mapping of tags to assign to Lambda Function."
-  default = {}
+  default     = {}
 }
