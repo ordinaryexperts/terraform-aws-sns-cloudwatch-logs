@@ -56,38 +56,6 @@ module "sns_logger" {
 > NOTE: Make sure you are using [version pinning](https://www.terraform.io/docs/modules/usage.html#module-versions) to avoid unexpected changes when the module is updated.
 
 
-
-Required Inputs
----------------
-
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| sns_topic_name | Name of SNS Topic to be logged by Gateway | string | - | yes |
-| log_group_name | Name of CloudWatch Log Group | string | - | yes |
-
-
-
-Optional Inputs
----------------
-
-| Name | Description | Type | Default | Required |
-|------|-------------|:----:|:-----:|:-----:|
-| create_sns_topic | Create new SNS topic | bool | `true` | no |
-| create_log_group | Create new log group | bool | `true` | no |
-| log_group_retention_days | Log Group retention (days) | number | `0` (forever) | no |
-| lambda_func_name | Name for Lambda Function | string | dynamically calculated | no |
-| lambda_description | Lambda Function Description | string | `Route SNS messages to CloudWatch Logs` | no |
-| tags | Mapping of Tags to assign to Lambda function | map | `{}` | no |
-| lambda_publish_func | Publish Lambda Function | bool | `false` | no |
-| lambda_runtime | Lambda runtime for Function | string | `python3.8` | no |
-| lambda_timeout | Function time-out (seconds) | number | `3` | no |
-| lambda_mem_size | Function RAM assigned (MB) | number | `128` | no |
-| create_warmer_event | Create CloudWatch trigger event to prevent hibernation | bool | `false` | no |
-
-
-TF Docs
--------
-
 <!-- BEGIN_TF_DOCS -->
 <!-- END_TF_DOCS -->
 
