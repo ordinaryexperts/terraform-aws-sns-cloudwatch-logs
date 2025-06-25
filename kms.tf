@@ -1,7 +1,3 @@
-# -------------------------------------------------------------------------------------
-# CREATE CUSTOMER MANAGED KMS KEY FOR LAMBDA FUNCTION
-# -------------------------------------------------------------------------------------
-
 resource "aws_kms_key" "lambda" {
   description             = "KMS key for Lambda function ${var.lambda_func_name}"
   deletion_window_in_days = 7
