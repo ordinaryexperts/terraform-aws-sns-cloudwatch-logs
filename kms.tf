@@ -30,7 +30,7 @@ resource "aws_kms_key" "lambda" {
     ]
   })
 
-  tags = var.lambda_tags
+  tags = var.tags
 }
 
 resource "aws_kms_alias" "lambda" {

@@ -39,7 +39,7 @@ resource "aws_lambda_function" "sns_cloudwatchlog" {
     }
   }
 
-  tags = var.lambda_tags
+  tags = var.tags
 }
 
 # -----------------------------------------------------------------
