@@ -85,6 +85,12 @@ Optional Inputs
 | create_warmer_event | Create CloudWatch trigger event to prevent hibernation | bool | `false` | no |
 
 
+TF Docs
+-------
+
+<!-- BEGIN_TF_DOCS -->
+<!-- END_TF_DOCS -->
+
 
 History
 -------
