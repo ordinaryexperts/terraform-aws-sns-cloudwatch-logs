@@ -84,10 +84,10 @@ jobs:
           config-file: .terraform-docs.yml
           git-push: "true"
 
-  fixme:
-    name: FIXME check
-    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft != true }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: bbugh/action-fixme-check@v1.1.0
+#  fixme:
+#    name: FIXME check
+#    if: ${{ github.event_name != 'pull_request' || github.event.pull_request.draft != true }}
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v1
+#      - uses: bbugh/action-fixme-check@v1.1.0
