@@ -6,6 +6,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [6.0.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v5.2.0...v6.0.0) (2025-06-25)
+
+
+### ⚠ BREAKING CHANGES
+
+* Customer-managed KMS key ([#28](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/28))
+
+### Features
+
+* Customer-managed KMS key ([#28](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/28)) ([644f5c2](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/644f5c2049c41408792265731d40aa64e2b13867))
+
 ## [5.2.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v5.1.0...v5.2.0) (2023-04-24)
 
 
