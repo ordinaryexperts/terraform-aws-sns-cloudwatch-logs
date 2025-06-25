@@ -53,3 +53,8 @@ inputs:
     required: false
     value: 128
     description: Lambda memory size in MB
+  - name: create_warmer_event
+    type: boolean
+    required: false
+    value: false
+    description: Whether CloudWatch warmer event was created
