@@ -42,4 +42,5 @@ data "aws_iam_policy_document" "lambda_cloudwatch_logs_policy" {
 
     resources = ["*"]
   }
+
 }

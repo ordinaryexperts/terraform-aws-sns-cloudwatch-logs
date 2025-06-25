@@ -31,13 +31,15 @@ resource "aws_lambda_function" "sns_cloudwatchlog" {
   timeout     = var.lambda_timeout
   memory_size = var.lambda_mem_size
 
+  kms_key_arn = aws_kms_key.lambda.arn
+
   environment {
     variables = {
       LOG_GROUP = var.log_group_name
     }
   }
 
-  tags = var.lambda_tags
+  tags = var.tags
 }
 
 # -----------------------------------------------------------------
