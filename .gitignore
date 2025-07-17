@@ -9,3 +9,4 @@ __pycache__/
 _build_layer/
 function/.coverage
 function/.poetry.lock.*
+function/requirements.txt
