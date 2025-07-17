@@ -131,7 +131,7 @@ jobs:
         with:
           name: coverage-report
           path: .coverage
-          if-no-files-found: warn
+          if-no-files-found: error
 
 #  docs:
 #    name: Generate TF module docs
