@@ -19,6 +19,20 @@ pytz = "^2023.3"
 black = "^23.3.0"
 ipython = "^8.12.0"
 mypy = "^1.2.0"
+pytest = "^7.3.1"
+pytest-cov = "^4.0.0"
+pytest-mock = "^3.10.0"
+moto = "^4.1.0"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_functions = "test_*"
+python_classes = "Test*"
+addopts = "-v --cov=. --cov-report=term-missing"
+
+[tool.coverage.run]
+omit = ["tests/*", "*.tox/*", ".venv/*"]
 
 [build-system]
 requires = ["poetry-core"]
