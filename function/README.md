@@ -22,30 +22,34 @@ The function processes SNS events and writes the message content to a CloudWatch
 ### Setup
 
 ```bash
-poetry install
+# Install uv if not already installed
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Install dependencies
+uv sync --all-extras
 ```
 
 ### Running Tests
 
 ```bash
 # Run all tests with coverage
-poetry run pytest
+uv run pytest
 
 # Run specific test
-poetry run pytest tests/test_sns_cloudwatch_gw.py::TestHandler::test_handler_sns_event_success
+uv run pytest tests/test_sns_cloudwatch_gw.py::TestHandler::test_handler_sns_event_success
 
 # Generate HTML coverage report
-poetry run pytest --cov=. --cov-report=html
+uv run pytest --cov=. --cov-report=html
 ```
 
 ### Code Quality
 
 ```bash
 # Format code
-poetry run black .
+uv run black .
 
 # Type checking
-poetry run mypy .
+uv run mypy .
 ```
 
 ## Test Coverage

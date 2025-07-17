@@ -1,29 +1,29 @@
-[tool.poetry]
+[project]
 name = "lambda-sns-cloudwatch-logs"
 version = "0.0.0"
 description = ""
-authors = ["Jason McVetta <jmcvetta@hey.com>"]
-license = "MIT"
+authors = [{name = "Jason McVetta", email = "jmcvetta@hey.com"}]
+license = {text = "MIT"}
 readme = "README.md"
-packages = [{include = "lambda_sns_cloudwatch_logs"}]
+requires-python = ">=3.9,<3.10"
+dependencies = [
+    "watchtower>=3.0.1",
+    "structlog>=23.1.0",
+    "environs>=9.5.0",
+    "pytz>=2023.3",
+    "marshmallow<4.0.0",
+]
 
-[tool.poetry.dependencies]
-python = "~3.9.0"
-watchtower = "^3.0.1"
-structlog = "^23.1.0"
-environs = "^9.5.0"
-pytz = "^2023.3"
-marshmallow = "<4.0.0"
-
-
-[tool.poetry.group.dev.dependencies]
-black = "^23.3.0"
-ipython = "^8.12.0"
-mypy = "^1.2.0"
-pytest = "^7.3.1"
-pytest-cov = "^4.0.0"
-pytest-mock = "^3.10.0"
-moto = "^4.1.0"
+[project.optional-dependencies]
+dev = [
+    "black>=23.3.0",
+    "ipython>=8.12.0",
+    "mypy>=1.2.0",
+    "pytest>=7.3.1",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "moto>=4.1.0",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -36,5 +36,5 @@ addopts = "-v --cov=. --cov-report=term-missing"
 omit = ["tests/*", "*.tox/*", ".venv/*"]
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
