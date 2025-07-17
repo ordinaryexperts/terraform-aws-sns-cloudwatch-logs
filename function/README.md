@@ -9,7 +9,7 @@ The function processes SNS events and writes the message content to a CloudWatch
 ## Function Handler
 
 - **Handler**: `sns_cloudwatch_gw.handler`
-- **Runtime**: Python 3.8+
+- **Runtime**: Python 3.9
 - **Architecture**: Uses structlog for structured logging and watchtower for CloudWatch integration
 
 ## Environment Variables
