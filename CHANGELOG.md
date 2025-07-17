@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [6.1.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v6.0.1...v6.1.0) (2025-07-17)
+
+
+### Features
+
+* Upgrade python to 3.9 and upgrade poetry deps ([#36](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/36)) ([9509420](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/9509420798b94c77410d82cfde267687ef4ac1be))
+
 ## [6.0.1](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v6.0.0...v6.0.1) (2025-07-17)
 
 
