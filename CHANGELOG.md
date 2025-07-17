@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [6.0.1](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v6.0.0...v6.0.1) (2025-07-17)
+
+
+### Bug Fixes
+
+* Deprecated `aws_region` syntax ([#33](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/33)) ([b5c3d04](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/b5c3d044bc1366ab38297fb89d585636af95d112))
+
 ## [6.0.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v5.2.0...v6.0.0) (2025-06-25)
 
 
