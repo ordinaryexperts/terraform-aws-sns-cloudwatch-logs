@@ -130,8 +130,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: ./function/.coverage
-          if-no-files-found: error
+          path: .coverage
+          if-no-files-found: warn
 
 #  docs:
 #    name: Generate TF module docs
