@@ -4,3 +4,8 @@
 
 # Python
 __pycache__/
+
+# Build Artifacts
+_build_layer/
+function/.coverage
+function/.poetry.lock.*
