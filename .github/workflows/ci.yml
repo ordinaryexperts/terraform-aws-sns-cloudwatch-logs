@@ -126,11 +126,21 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest
+
+      - name: Verify coverage file exists
+        run: |
+          if [ ! -f .coverage ]; then
+            echo "ERROR: Coverage file was not generated!"
+            exit 1
+          fi
+          # Move coverage file to repository root for artifact upload
+          cp .coverage ${{ github.workspace }}/function-coverage
+
       - name: Upload coverage reports
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: ./function/.coverage
+          path: function-coverage
           if-no-files-found: error
 
 #  docs:
