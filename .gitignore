@@ -10,3 +10,6 @@ _build_layer/
 function/.coverage
 function/.poetry.lock.*
 function/requirements.txt
+
+# IntelliJ
+.idea/
