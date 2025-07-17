@@ -19,16 +19,19 @@ variable "log_group_name" {
 # SNS TOPIC, LOG GROUP, LOG STREAM
 
 variable "create_sns_topic" {
+  type        = bool
   default     = true
   description = "Boolean flag that determines if SNS topic, 'sns_topic_name' is created. If 'false' it uses an existing topic of that name."
 }
 
 variable "create_log_group" {
+  type        = bool
   default     = true
   description = "Boolean flag that determines if log group, 'log_group_name' is created.  If 'false' it uses an existing group of that name."
 }
 
 variable "log_group_retention_days" {
+  type        = number
   default     = 0
   description = "Number of days to retain data in the log group (0 = always retain)."
 }
@@ -48,21 +51,25 @@ variable "lambda_description" {
 }
 
 variable "lambda_publish_func" {
+  type        = bool
   default     = false
   description = "Boolean flag that determines if Lambda function is published as a version."
 }
 
 variable "create_warmer_event" {
+  type        = bool
   default     = false
   description = "Boolean flag that determines if a CloudWatch Trigger event is created to prevent Lambda function from suspending."
 }
 
 variable "lambda_timeout" {
+  type        = number
   default     = 3
   description = "Number of seconds that the function can run before timing out. The AWS default is 3s and the maximum runtime is 5m"
 }
 
 variable "lambda_mem_size" {
+  type        = number
   default     = 128
   description = "Amount of RAM (in MB) assigned to the function. The default (and minimum) is 128MB, and the maximum is 3008MB."
 }
@@ -74,6 +81,7 @@ variable "lambda_runtime" {
 }
 
 variable "tags" {
+  type        = map(string)
   description = "A mapping of tags to assign to Lambda Function."
   default     = {}
 }
