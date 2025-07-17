@@ -8,7 +8,7 @@ readme = "README.md"
 packages = [{include = "lambda_sns_cloudwatch_logs"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "~3.9.0"
 watchtower = "^3.0.1"
 structlog = "^23.1.0"
 environs = "^9.5.0"
