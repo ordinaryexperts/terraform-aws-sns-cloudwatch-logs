@@ -80,8 +80,10 @@ jobs:
 
   trufflehog:
     name: TruffleHog
-    needs: changed
-    if: ${{ github.event_name != 'schedule' }}
+    # Skip on: scheduled runs, draft PRs
+    if: |
+      github.event_name != 'schedule' &&
+      github.event.pull_request.draft != true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
