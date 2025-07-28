@@ -10,4 +10,6 @@ resource "aws_lambda_layer_version" "logging_base" {
   description = "python logging and watchtower libraries"
 
   compatible_runtimes = [local.lambda_runtime]
+
+  tags = var.tags
 }
