@@ -1,6 +1,7 @@
 """Write log entries to cloudwatch logs."""
 
 import logging
+from typing import Any, Dict
 
 import environs
 import structlog
@@ -12,7 +13,7 @@ env = environs.Env()
 log = structlog.stdlib.get_logger()
 
 
-def handler(event, context):
+def handler(event: Dict[str, Any], context: Any) -> None:
     # Debug logging
     log_level = env.log_level("LOG_LEVEL", logging.INFO)
     structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(log_level))
