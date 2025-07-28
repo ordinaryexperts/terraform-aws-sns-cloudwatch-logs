@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [7.1.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v7.0.0...v7.1.0) (2025-07-28)
+
+
+### Features
+
+* Type declarations for all variables ([#31](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/31)) ([3d0df86](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/3d0df86b16f657c599c7a4c6ea91344d8cabb63d))
+
 ## [7.0.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v6.1.0...v7.0.0) (2025-07-28)
 
 
