@@ -21,13 +21,13 @@ variable "log_group_name" {
 variable "create_sns_topic" {
   type        = bool
   default     = true
-  description = "Boolean flag that determines if SNS topic, 'sns_topic_name' is created. If 'false' it uses an existing topic of that name."
+  description = "Whether to create a new SNS topic. If false, uses an existing topic with the name specified in sns_topic_name."
 }
 
 variable "create_log_group" {
   type        = bool
   default     = true
-  description = "Boolean flag that determines if log group, 'log_group_name' is created.  If 'false' it uses an existing group of that name."
+  description = "Whether to create a new CloudWatch Log Group. If false, uses an existing log group with the name specified in log_group_name."
 }
 
 variable "log_group_retention_days" {
@@ -57,19 +57,19 @@ variable "lambda_description" {
 variable "lambda_publish_func" {
   type        = bool
   default     = false
-  description = "Boolean flag that determines if Lambda function is published as a version."
+  description = "Whether to publish the Lambda function as a version."
 }
 
 variable "create_warmer_event" {
   type        = bool
   default     = false
-  description = "Boolean flag that determines if a CloudWatch Trigger event is created to prevent Lambda function from suspending."
+  description = "Whether to create a CloudWatch Events rule to periodically invoke the Lambda function to prevent cold starts."
 }
 
 variable "lambda_timeout" {
   type        = number
   default     = 3
-  description = "Number of seconds that the function can run before timing out. The AWS default is 3s and the maximum runtime is 5m"
+  description = "Lambda function timeout in seconds. AWS default is 3 seconds, maximum is 300 seconds (5 minutes)."
   validation {
     condition     = var.lambda_timeout >= 1 && var.lambda_timeout <= 300
     error_message = "The lambda_timeout must be between 1 and 300 seconds (5 minutes)."
@@ -79,7 +79,7 @@ variable "lambda_timeout" {
 variable "lambda_mem_size" {
   type        = number
   default     = 128
-  description = "Amount of RAM (in MB) assigned to the function. The default (and minimum) is 128MB, and the maximum is 3008MB."
+  description = "Lambda function memory size in MB. Must be between 128 MB and 3008 MB in 64 MB increments."
   validation {
     condition     = var.lambda_mem_size >= 128 && var.lambda_mem_size <= 3008 && var.lambda_mem_size % 64 == 0
     error_message = "The lambda_mem_size must be between 128 and 3008 MB, in 64 MB increments."
@@ -88,6 +88,6 @@ variable "lambda_mem_size" {
 
 variable "tags" {
   type        = map(string)
-  description = "A mapping of tags to assign to Lambda Function."
+  description = "Map of tags to assign to all created resources."
   default     = {}
 }

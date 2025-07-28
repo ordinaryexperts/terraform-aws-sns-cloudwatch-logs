@@ -23,7 +23,7 @@ resource "aws_lambda_function" "sns_cloudwatchlog" {
   filename         = "${path.module}/lambda.zip"
   source_code_hash = data.archive_file.lambda_function.output_base64sha256
 
-  publish = var.lambda_publish_func ? true : false
+  publish = var.lambda_publish_func
   role    = aws_iam_role.lambda_cloudwatch_logs.arn
 
   runtime     = local.lambda_runtime
