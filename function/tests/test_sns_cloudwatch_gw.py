@@ -1,16 +1,34 @@
 """Unit tests for sns_cloudwatch_gw Lambda function."""
 
 import os
-import sys
 import logging
+from pathlib import Path
 from unittest.mock import patch, MagicMock
 import pytest
 import datetime
 import pytz
 import json
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Add parent directory to Python path for imports
+import sys
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 import sns_cloudwatch_gw
+
+
+def create_mock_logger():
+    """Create a mock logger for CloudWatch tests."""
+    mock_logger = MagicMock()
+    mock_logger.setLevel = MagicMock()
+    mock_logger.addHandler = MagicMock()
+    mock_logger.info = MagicMock()
+    return mock_logger
+
+
+def setup_cloudwatch_handler_mock(mock_cw_handler_class, mock_watchtower_handler):
+    """Set up CloudWatch handler mock with standard configuration."""
+    mock_cw_handler_class.return_value = mock_watchtower_handler
+    return mock_cw_handler_class
 
 
 class TestHandler:
@@ -29,12 +47,10 @@ class TestHandler:
     @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
     def test_handler_sns_event_success(self, mock_cw_handler_class, sns_event, lambda_context, mock_watchtower_handler):
         """Test successful processing of SNS event."""
-        mock_cw_handler_class.return_value = mock_watchtower_handler
-        mock_cw_logger = MagicMock()
+        setup_cloudwatch_handler_mock(mock_cw_handler_class, mock_watchtower_handler)
+        mock_cw_logger = create_mock_logger()
         
-        with patch('sns_cloudwatch_gw.logging.getLogger') as mock_get_logger:
-            mock_get_logger.return_value = mock_cw_logger
-            
+        with patch('sns_cloudwatch_gw.logging.getLogger', return_value=mock_cw_logger):
             result = sns_cloudwatch_gw.handler(sns_event, lambda_context)
             
             mock_cw_logger.setLevel.assert_called_once_with(logging.INFO)
@@ -357,54 +373,23 @@ with patch('sns_cloudwatch_gw.handler') as mock_handler:
 class TestMainExecution:
     """Test cases for direct script execution."""
     
-    def test_direct_execution(self):
-        """Test running the module directly."""
-        import subprocess
-        import tempfile
-        
-        # Create a test script that runs the module directly
-        test_script = '''
-import os
-import sys
-
-# Set required environment variables
-os.environ['LOG_GROUP'] = 'test-log-group'
-os.environ['LOG_LEVEL'] = 'INFO'
-
-# Add the parent directory to sys.path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-
-# Mock watchtower before importing
-from unittest.mock import MagicMock, patch
-
-mock_handler = MagicMock()
-mock_handler.flush = MagicMock()
-
-with patch('watchtower.CloudWatchLogHandler', return_value=mock_handler):
-    with patch('logging.getLogger') as mock_get_logger:
-        mock_logger = MagicMock()
+    @patch.dict(os.environ, {'LOG_GROUP': 'test-log-group', 'LOG_LEVEL': 'INFO'})
+    @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
+    @patch('sns_cloudwatch_gw.logging.getLogger')
+    def test_direct_execution(self, mock_get_logger, mock_cw_handler_class):
+        """Test running the module directly with __main__ block."""
+        # Set up mocks
+        mock_logger = create_mock_logger()
         mock_get_logger.return_value = mock_logger
+        mock_handler = MagicMock()
+        mock_cw_handler_class.return_value = mock_handler
         
-        # Now import and run the module
+        # Import and execute the module's main block
         import runpy
-        runpy.run_path('sns_cloudwatch_gw.py', run_name='__main__')
         
-        # Verify the handler was called
-        assert mock_logger.info.call_count == 0  # No message since event is empty
-'''
+        module_path = Path(__file__).parent.parent / 'sns_cloudwatch_gw.py'
+        runpy.run_path(str(module_path), run_name='__main__')
         
-        # Write the test script to the function directory
-        with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False, 
-                                         dir=os.path.dirname(os.path.dirname(__file__))) as f:
-            f.write(test_script)
-            temp_file = f.name
-        
-        try:
-            # Execute the test script
-            result = subprocess.run([sys.executable, temp_file], 
-                                  capture_output=True, text=True,
-                                  cwd=os.path.dirname(os.path.dirname(__file__)))
-            assert result.returncode == 0, f"Script failed: {result.stderr}"
-        finally:
-            # Clean up
-            os.unlink(temp_file)
+        # Verify the handler was created and logger configured
+        mock_cw_handler_class.assert_called_once()
+        mock_logger.setLevel.assert_called_once_with(logging.INFO)
