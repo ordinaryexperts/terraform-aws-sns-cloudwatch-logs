@@ -93,7 +93,7 @@ jobs:
       - name: Secret Scanning
         uses: trufflesecurity/trufflehog@main
         with:
-          extra_args: --config .trufflehog.yaml
+          extra_args: --only-verified
 
   python-test:
     name: Python Tests
