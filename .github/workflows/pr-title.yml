@@ -1,0 +1,32 @@
+name: PR Title
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+      - ready_for_review
+  # Github requires PR title check to be re-validated after Yor action pushes changes to the release branch
+  push:
+    branches: [ release-please--branches--master ]
+
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate PR title
+    if: "${{ github.event.pull_request.draft != true }}"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: thehanimo/pr-title-checker@v1.4.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          configuration_path: ".github/pr-title-checker-config.json"
