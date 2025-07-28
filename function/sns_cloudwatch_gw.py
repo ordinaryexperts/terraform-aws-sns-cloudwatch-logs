@@ -1,7 +1,6 @@
 """Write log entries to cloudwatch logs."""
 
 import logging
-import os
 
 import environs
 import structlog
