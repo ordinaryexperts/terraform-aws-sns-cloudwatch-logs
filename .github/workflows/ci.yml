@@ -81,6 +81,7 @@ jobs:
   trufflehog:
     name: TruffleHog
     needs: changed
+    if: ${{ github.event_name != 'schedule' }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
