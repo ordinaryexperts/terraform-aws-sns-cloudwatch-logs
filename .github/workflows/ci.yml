@@ -141,7 +141,7 @@ jobs:
           if-no-files-found: error
 
   terraform-docs:
-    name: Terraform Docs Check
+    name: Terraform Docs
     needs: changed
     if: "${{ needs.changed.outputs.tf_any_modified == 'true' }}"
     runs-on: ubuntu-latest
