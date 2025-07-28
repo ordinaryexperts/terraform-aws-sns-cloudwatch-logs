@@ -140,23 +140,23 @@ jobs:
           path: function-coverage
           if-no-files-found: error
 
-#  docs:
-#    name: Generate TF module docs
-#    needs: changed
-#    if: "${{ needs.changed.outputs.tf_any_modified == 'true' }}"
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#        with:
-#          ref: ${{ github.event.pull_request.head.ref }}
-#          token: ${{ secrets.TF_DOCS_PAT }}
-#
-#      - name: Render terraform docs and push changes back to PR
-#        uses: terraform-docs/gh-actions@main
-#        with:
-#          working-dir: .
-#          config-file: .terraform-docs.yml
-#          git-push: "true"
+  terraform-docs:
+    name: Terraform Docs
+    needs: changed
+    if: "${{ needs.changed.outputs.tf_any_modified == 'true' }}"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check terraform-docs
+        uses: terraform-docs/gh-actions@v1.3.0
+        with:
+          working-dir: .
+          output-file: README.md
+          output-method: inject
+          config-file: .terraform-docs.yml
+          git-push: "false"
+          fail-on-diff: "true"
 
 #  fixme:
 #    name: FIXME check

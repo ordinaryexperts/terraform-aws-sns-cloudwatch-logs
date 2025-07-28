@@ -12,6 +12,21 @@ Terraform module for provisioning a Lambda function that routes SNS messages to 
 
 ## Recent Changes (2025-01-28)
 
+### Variable Type Improvements (PR #31)
+- Added explicit type declarations to all Terraform variables
+- Added comprehensive validation rules for constrained inputs:
+  - `log_group_retention_days`: Validates against AWS's allowed retention periods
+  - `lambda_timeout`: Enforces 1-300 second range
+  - `lambda_mem_size`: Validates 128-3008 MB in 64 MB increments
+- Converted `lambda_runtime` from variable to local constant (correctly reflects pre-built layer constraint)
+- Centralized conditional logic into locals.tf to reduce code duplication
+- Fixed typo in IAM resource name (`lambda_cloudwatch_logs_polcy` → `lambda_cloudwatch_logs_policy`)
+- Improved IAM security by scoping permissions to specific log group ARN instead of "*"
+- Extended tag support to Lambda Layer and CloudWatch Event Rule
+- Updated README to reflect removal of lambda_runtime variable
+
+## Recent Changes (2025-01-28)
+
 ### Build System Modernization
 - Replaced deprecated `robertpeteuil/build-lambda-layer-python` with custom `build_layer.sh` script
 - Uses official AWS SAM CLI build images (`public.ecr.aws/sam/build-python3.12:latest`)

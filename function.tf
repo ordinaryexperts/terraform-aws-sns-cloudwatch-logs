@@ -23,10 +23,10 @@ resource "aws_lambda_function" "sns_cloudwatchlog" {
   filename         = "${path.module}/lambda.zip"
   source_code_hash = data.archive_file.lambda_function.output_base64sha256
 
-  publish = var.lambda_publish_func ? true : false
+  publish = var.lambda_publish_func
   role    = aws_iam_role.lambda_cloudwatch_logs.arn
 
-  runtime     = var.lambda_runtime
+  runtime     = local.lambda_runtime
   handler     = "sns_cloudwatch_gw.handler"
   timeout     = var.lambda_timeout
   memory_size = var.lambda_mem_size
@@ -52,6 +52,6 @@ resource "aws_lambda_permission" "sns_cloudwatchlog_multi" {
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.sns_cloudwatchlog.function_name
   principal     = "sns.amazonaws.com"
-  source_arn    = var.create_sns_topic ? aws_sns_topic.sns_log_topic[0].arn : data.aws_sns_topic.sns_log_topic[0].arn
+  source_arn    = local.sns_topic_arn
   qualifier     = var.lambda_publish_func ? aws_lambda_function.sns_cloudwatchlog.version : null
 }

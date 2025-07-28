@@ -3,11 +3,11 @@
 # -----------------------------------------------------------------
 
 resource "aws_lambda_layer_version" "logging_base" {
-  filename         = "${path.module}/base_${var.lambda_runtime}.zip"
-  source_code_hash = filebase64sha256("${path.module}/base_${var.lambda_runtime}.zip")
+  filename         = "${path.module}/base_${local.lambda_runtime}.zip"
+  source_code_hash = filebase64sha256("${path.module}/base_${local.lambda_runtime}.zip")
 
-  layer_name  = "sns-cloudwatch-base-${replace(var.lambda_runtime, ".", "")}"
+  layer_name  = "sns-cloudwatch-base-${replace(local.lambda_runtime, ".", "")}"
   description = "python logging and watchtower libraries"
 
-  compatible_runtimes = [var.lambda_runtime]
+  compatible_runtimes = [local.lambda_runtime]
 }

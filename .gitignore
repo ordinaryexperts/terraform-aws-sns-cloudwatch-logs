@@ -1,6 +1,8 @@
+# Terraform
 *.tfstate
 *.tfstate.backup
 .terraform
+.terraform.lock.hcl
 
 # Python
 __pycache__/
@@ -13,3 +15,7 @@ function/requirements.txt
 
 # IntelliJ
 .idea/
+
+# Claude
+.tmp.claude/
+

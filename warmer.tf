@@ -9,6 +9,8 @@ resource "aws_cloudwatch_event_rule" "warmer" {
   name                = "sns-logger-warmer-${var.sns_topic_name}"
   description         = "Keeps ${var.lambda_func_name} Warm"
   schedule_expression = "rate(15 minutes)"
+
+  tags = var.tags
 }
 
 # set event target as sns_to_cloudwatch_logs lambda function 

@@ -10,10 +10,12 @@ locals {
 resource "aws_iam_role" "lambda_cloudwatch_logs" {
   name               = local.iam_role_name
   assume_role_policy = data.aws_iam_policy_document.lambda_cloudwatch_logs.json
+
+  tags = var.tags
 }
 
 # Add base Lambda Execution policy
-resource "aws_iam_role_policy" "lambda_cloudwatch_logs_polcy" {
+resource "aws_iam_role_policy" "lambda_cloudwatch_logs_policy" {
   name   = local.iam_role_name
   role   = aws_iam_role.lambda_cloudwatch_logs.id
   policy = data.aws_iam_policy_document.lambda_cloudwatch_logs_policy.json
@@ -40,7 +42,10 @@ data "aws_iam_policy_document" "lambda_cloudwatch_logs_policy" {
       "logs:PutLogEvents",
     ]
 
-    resources = ["*"]
+    resources = [
+      local.log_group_arn,
+      "${local.log_group_arn}:*"
+    ]
   }
 
 }
