@@ -92,6 +92,8 @@ jobs:
           fetch-depth: 0
       - name: Secret Scanning
         uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --config .trufflehog.yaml
 
   python-test:
     name: Python Tests
