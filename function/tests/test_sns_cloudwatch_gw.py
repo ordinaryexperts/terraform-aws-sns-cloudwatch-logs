@@ -486,6 +486,8 @@ with patch('sns_cloudwatch_gw.handler') as mock_handler:
         mock_root_logger.info.assert_not_called()
         
         # Verify no handlers were added to root logger for SNS messages
+        # This check ensures that the CloudWatch handler is isolated to the "cloudwatch" logger
+        # and not inadvertently attached to the root logger, which would cause double logging
         assert len(root_handlers) == 0
 
     @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
