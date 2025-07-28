@@ -6,7 +6,7 @@ set -euo pipefail
 # Uses official AWS SAM CLI build images
 
 # Configuration
-PYTHON_VERSION="3.9"
+PYTHON_VERSION="3.12"
 OUTPUT_DIR="."
 
 # Colors for output
