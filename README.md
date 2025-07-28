@@ -19,10 +19,10 @@ This Module allows simple and rapid deployment
   - Create CloudWatch Event to prevent Function hibernation
   - Set Log Group retention period
 - Python function editable in repository and in Lambda UI
-  - Python dependencies packages in Lambda Layers zip
-- Optionally create custom Lambda Layer zip using [build-lambda-layer-python](https://github.com/robertpeteuil/build-lambda-layer-python)
+  - Python dependencies packaged in Lambda Layer zip
+- Lambda Layer build system using AWS SAM CLI Docker images
   - Enables adding/changing dependencies
-  - Enables compiling for different version of Python
+  - Pre-built layer included for Python 3.12
 
 
 
@@ -56,6 +56,59 @@ module "sns_logger" {
 > NOTE: Make sure you are using [version pinning](https://www.terraform.io/docs/modules/usage.html#module-versions) to avoid unexpected changes when the module is updated.
 
 
+Contributing
+------------
+
+### Building the Lambda Layer
+
+This module includes a pre-built Lambda layer (`base_python3.12.zip`) containing all Python dependencies. The layer must be rebuilt and committed to the repository when:
+
+- Upgrading Python dependencies in `function/pyproject.toml`
+- Changing the Python runtime version
+- Adding or removing dependencies
+
+#### Prerequisites
+
+- Docker installed and running
+- [uv](https://github.com/astral-sh/uv) installed (for dependency management)
+- Write access to the repository
+
+#### Build Process
+
+1. **Build the layer**:
+   ```bash
+   make lambda_layer
+   # or directly:
+   ./build_layer.sh
+   ```
+
+2. **Test the changes**:
+   ```bash
+   make test
+   ```
+
+3. **Commit the updated layer**:
+   ```bash
+   git add base_python3.12.zip
+   git commit -m "chore: Update Lambda layer with new dependencies"
+   ```
+
+#### How it Works
+
+The build script (`build_layer.sh`):
+1. Detects or generates a `requirements.txt` from `function/pyproject.toml` using `uv pip compile`
+2. Uses AWS SAM CLI Docker image (`public.ecr.aws/sam/build-python3.12:latest`) to install dependencies
+3. Creates a Lambda-compatible zip file with dependencies in the correct directory structure
+4. Validates the layer size against AWS Lambda limits (250MB unzipped)
+
+#### Important Notes
+
+- The pre-built layer **must be committed** to the repository for the Terraform module to work
+- The layer is built for a specific Python version (currently 3.12) and must match the Lambda runtime
+- Binary files in Git increase repository size, but this is necessary for module distribution
+- Always rebuild the layer when updating dependencies to ensure compatibility
+
+
 <!-- BEGIN_TF_DOCS -->
 # Requirements
 
@@ -63,7 +116,7 @@ module "sns_logger" {
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~>  1.0 |
 | <a name="requirement_archive"></a> [archive](#requirement\_archive) | ~>2.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~>5.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0 |
 
 # Inputs
 

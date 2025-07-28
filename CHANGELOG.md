@@ -6,6 +6,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [7.0.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v6.1.0...v7.0.0) (2025-07-28)
+
+
+### ⚠ BREAKING CHANGES
+
+* Replace deprecated build tool and upgrade to Python 3.12 ([#41](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/41))
+
+### Features
+
+* Replace deprecated build tool and upgrade to Python 3.12 ([#41](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/41)) ([0d55721](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/0d55721637b8fb3466bd995fa3e0df9bb95ac84f))
+
 ## [6.1.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v6.0.1...v6.1.0) (2025-07-17)
 
 
