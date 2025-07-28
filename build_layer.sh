@@ -68,7 +68,7 @@ fi
 mkdir -p "${OUTPUT_DIR}"
 
 # Define output zip file name
-ZIP_FILE="${OUTPUT_DIR}/python${PYTHON_VERSION}_layer.zip"
+ZIP_FILE="${OUTPUT_DIR}/base_python${PYTHON_VERSION}.zip"
 
 # Create temporary directory for build
 TEMP_DIR=$(mktemp -d)
