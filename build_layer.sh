@@ -81,6 +81,15 @@ log "Output will be saved to: ${ZIP_FILE}"
 # Copy requirements to temp directory
 cp "${REQUIREMENTS_FILE}" "${TEMP_DIR}/requirements.txt"
 
+# Define the Docker image for building
+BUILD_IMAGE="public.ecr.aws/sam/build-python${PYTHON_VERSION}:latest"
+
+# Verify Docker image is available
+log "Checking Docker image availability..."
+if ! docker image inspect "${BUILD_IMAGE}" &>/dev/null; then
+    log "Docker image not found locally, will be pulled automatically"
+fi
+
 # Build the layer using AWS SAM CLI build image
 log "Running Docker build..."
 docker run --rm \
@@ -88,7 +97,7 @@ docker run --rm \
     -v "${TEMP_DIR}":/var/task \
     -w /var/task \
     -u "$(id -u):$(id -g)" \
-    "public.ecr.aws/sam/build-python${PYTHON_VERSION}:latest" \
+    "${BUILD_IMAGE}" \
     bash -c "
         set -e
         echo 'Installing dependencies...'
@@ -108,20 +117,29 @@ mv "${TEMP_DIR}/layer.zip" "${ZIP_FILE}"
 ZIP_SIZE=$(du -h "${ZIP_FILE}" | cut -f1)
 log "Layer created successfully: ${ZIP_FILE} (${ZIP_SIZE})"
 
+# Lambda layer size limit (250MB unzipped)
+LAMBDA_LAYER_SIZE_LIMIT=262144000  # 250MB in bytes
+
 # Check if size exceeds Lambda limits
-ZIP_SIZE_BYTES=$(stat -f%z "${ZIP_FILE}" 2>/dev/null || stat -c%s "${ZIP_FILE}" 2>/dev/null)
-if [[ ${ZIP_SIZE_BYTES} -gt 262144000 ]]; then  # 250MB in bytes
+# Use portable method to get file size
+ZIP_SIZE_BYTES=$(wc -c < "${ZIP_FILE}" | tr -d ' ')
+if [[ ${ZIP_SIZE_BYTES} -gt ${LAMBDA_LAYER_SIZE_LIMIT} ]]; then
     warning "Layer size exceeds Lambda's 250MB unzipped limit!"
     warning "Consider using container images or splitting dependencies"
 fi
 
 # Clean up temporary requirements.txt if we created it from pyproject.toml
-if [[ -f "function/pyproject.toml" ]] && [[ "${REQUIREMENTS_FILE}" == "function/requirements.txt" ]]; then
-    rm -f "${REQUIREMENTS_FILE}"
-    log "Cleaned up temporary requirements.txt"
-elif [[ -f "pyproject.toml" ]] && [[ "${REQUIREMENTS_FILE}" == "requirements.txt" ]]; then
-    rm -f "${REQUIREMENTS_FILE}"
-    log "Cleaned up temporary requirements.txt"
-fi
+cleanup_temp_requirements() {
+    local pyproject_file="$1"
+    local req_file="$2"
+    
+    if [[ -f "${pyproject_file}" ]] && [[ "${REQUIREMENTS_FILE}" == "${req_file}" ]]; then
+        rm -f "${REQUIREMENTS_FILE}"
+        log "Cleaned up temporary requirements.txt"
+    fi
+}
+
+cleanup_temp_requirements "function/pyproject.toml" "function/requirements.txt"
+cleanup_temp_requirements "pyproject.toml" "requirements.txt"
 
 log "Build complete!"
