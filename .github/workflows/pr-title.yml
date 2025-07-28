@@ -11,9 +11,9 @@ on:
       - synchronize
       - ready_for_review
       - labeled
-  # Github requires PR title check to be re-validated after Yor action pushes changes to the release branch
-  push:
-    branches: [ release-please--branches--master ]
+#  # Github requires PR title check to be re-validated after Yor action pushes changes to the release branch
+#  push:
+#    branches: [ release-please--branches--master ]
 
 
 permissions:
