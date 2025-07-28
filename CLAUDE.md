@@ -88,7 +88,18 @@ Terraform module for provisioning a Lambda function that routes SNS messages to 
 - Lambda layer must be committed to repository for Terraform module distribution
 - README includes comprehensive build documentation
 
+## Recent Changes (2025-01-29)
+
+### Process All SNS Records Enhancement (PR #48)
+- **Fixed**: Lambda function now processes ALL records in event["Records"] array
+- Previously only processed the first record, potentially dropping messages
+- Added comprehensive error handling for malformed records
+- Improved code quality with clearer logic flow and descriptive error messages
+- Added extensive test coverage for edge cases (mixed event sources, missing fields, empty records)
+- Maintained 100% test coverage
+
 ## Known Issues
-- Only processes first SNS record (documented with FIXME)
 - No error handling for CloudWatch operations
 - No retry logic for transient failures
+- Lambda function lacks type hints
+- CloudWatch stream naming logic could be more configurable
