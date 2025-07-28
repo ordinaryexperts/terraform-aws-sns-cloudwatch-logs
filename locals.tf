@@ -1,6 +1,9 @@
 locals {
   region = data.aws_region.current.id
 
+  # Lambda runtime is fixed to match the pre-built layer
+  lambda_runtime = "python3.12"
+
   # Conditional resource ARNs to reduce repetition
   sns_topic_arn = var.create_sns_topic ? aws_sns_topic.sns_log_topic[0].arn : data.aws_sns_topic.sns_log_topic[0].arn
   log_group_arn = var.create_log_group ? aws_cloudwatch_log_group.sns_logged_item_group[0].arn : data.aws_cloudwatch_log_group.sns_logged_item_group[0].arn

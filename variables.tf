@@ -86,16 +86,6 @@ variable "lambda_mem_size" {
   }
 }
 
-variable "lambda_runtime" {
-  type        = string
-  default     = "python3.12"
-  description = "Lambda runtime to use for the function."
-  validation {
-    condition     = contains(["python3.8", "python3.9", "python3.10", "python3.11", "python3.12", "python3.13"], var.lambda_runtime)
-    error_message = "The lambda_runtime must be a supported Python runtime version (python3.8 through python3.13)."
-  }
-}
-
 variable "tags" {
   type        = map(string)
   description = "A mapping of tags to assign to Lambda Function."
