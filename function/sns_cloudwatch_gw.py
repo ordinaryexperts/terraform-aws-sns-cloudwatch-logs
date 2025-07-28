@@ -27,21 +27,30 @@ def handler(event, context):
     )
     cwLogger.addHandler(cloudwatch_handler)
 
-    try:
-        # FIXME: What if there are more than one record?
-        # Currently only processes the first record in the event
-        # Lambda typically sends one SNS message per invocation, but this could change
-        message_source = event["Records"][0]["EventSource"]
-    except KeyError:
-        log.warn("Unexpected event format", lambda_event=event)
+    # Process all records in the event
+    if "Records" not in event:
+        log.warn("Unexpected event format - missing Records", lambda_event=event)
         return
 
-    if message_source == "aws:sns":
-        body = event["Records"][0]["Sns"]["Message"]
-        cwLogger.info(body)
-        cloudwatch_handler.flush()
-    else:
-        log.warn("Message source is not aws:sns", event=event)
+    for record in event["Records"]:
+        try:
+            message_source = record["EventSource"]
+        except KeyError:
+            log.warn("Unexpected record format - missing EventSource", record=record)
+            continue
+
+        if message_source == "aws:sns":
+            try:
+                body = record["Sns"]["Message"]
+                cwLogger.info(body)
+            except KeyError:
+                log.warn("Unexpected SNS record format - missing Sns.Message", record=record)
+                continue
+        else:
+            log.warn("Message source is not aws:sns", record=record)
+
+    # Flush after processing all records
+    cloudwatch_handler.flush()
 
     # Lambda doesn't require a specific return value for asynchronous invocations
     # Returning None indicates successful completion
