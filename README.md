@@ -122,19 +122,18 @@ The build script (`build_layer.sh`):
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_create_log_group"></a> [create\_log\_group](#input\_create\_log\_group) | Boolean flag that determines if log group, 'log\_group\_name' is created.  If 'false' it uses an existing group of that name. | `bool` | `true` | no |
-| <a name="input_create_sns_topic"></a> [create\_sns\_topic](#input\_create\_sns\_topic) | Boolean flag that determines if SNS topic, 'sns\_topic\_name' is created. If 'false' it uses an existing topic of that name. | `bool` | `true` | no |
-| <a name="input_create_warmer_event"></a> [create\_warmer\_event](#input\_create\_warmer\_event) | Boolean flag that determines if a CloudWatch Trigger event is created to prevent Lambda function from suspending. | `bool` | `false` | no |
+| <a name="input_create_log_group"></a> [create\_log\_group](#input\_create\_log\_group) | Whether to create a new CloudWatch Log Group. If false, uses an existing log group with the name specified in log\_group\_name. | `bool` | `true` | no |
+| <a name="input_create_sns_topic"></a> [create\_sns\_topic](#input\_create\_sns\_topic) | Whether to create a new SNS topic. If false, uses an existing topic with the name specified in sns\_topic\_name. | `bool` | `true` | no |
+| <a name="input_create_warmer_event"></a> [create\_warmer\_event](#input\_create\_warmer\_event) | Whether to create a CloudWatch Events rule to periodically invoke the Lambda function to prevent cold starts. | `bool` | `false` | no |
 | <a name="input_lambda_description"></a> [lambda\_description](#input\_lambda\_description) | Description to assign to Lambda Function. | `string` | `""` | no |
 | <a name="input_lambda_func_name"></a> [lambda\_func\_name](#input\_lambda\_func\_name) | Name to assign to Lambda Function. | `string` | `"SNStoCloudWatchLogs"` | no |
-| <a name="input_lambda_mem_size"></a> [lambda\_mem\_size](#input\_lambda\_mem\_size) | Amount of RAM (in MB) assigned to the function. The default (and minimum) is 128MB, and the maximum is 3008MB. | `number` | `128` | no |
-| <a name="input_lambda_publish_func"></a> [lambda\_publish\_func](#input\_lambda\_publish\_func) | Boolean flag that determines if Lambda function is published as a version. | `bool` | `false` | no |
-| <a name="input_lambda_runtime"></a> [lambda\_runtime](#input\_lambda\_runtime) | Lambda runtime to use for the function. | `string` | `"python3.8"` | no |
-| <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Number of seconds that the function can run before timing out. The AWS default is 3s and the maximum runtime is 5m | `number` | `3` | no |
+| <a name="input_lambda_mem_size"></a> [lambda\_mem\_size](#input\_lambda\_mem\_size) | Lambda function memory size in MB. Must be between 128 MB and 3008 MB in 64 MB increments. | `number` | `128` | no |
+| <a name="input_lambda_publish_func"></a> [lambda\_publish\_func](#input\_lambda\_publish\_func) | Whether to publish the Lambda function as a version. | `bool` | `false` | no |
+| <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Lambda function timeout in seconds. AWS default is 3 seconds, maximum is 300 seconds (5 minutes). | `number` | `3` | no |
 | <a name="input_log_group_name"></a> [log\_group\_name](#input\_log\_group\_name) | Name of CloudWatch Log Group created or used (if previously created). | `string` | n/a | yes |
 | <a name="input_log_group_retention_days"></a> [log\_group\_retention\_days](#input\_log\_group\_retention\_days) | Number of days to retain data in the log group (0 = always retain). | `number` | `0` | no |
 | <a name="input_sns_topic_name"></a> [sns\_topic\_name](#input\_sns\_topic\_name) | Name of SNS Topic logging to CloudWatch Log. | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | A mapping of tags to assign to Lambda Function. | `map` | `{}` | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to assign to all created resources. | `map(string)` | `{}` | no |
 
 # Outputs
 
