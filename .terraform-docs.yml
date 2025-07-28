@@ -15,6 +15,7 @@ sections:
 #    - providers
 #    - resources
 #    - data-sources
+    - modules
 
 output:
   file: README.md
