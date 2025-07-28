@@ -1,14 +1,17 @@
 # TruffleHog v3 Configuration
-# Excludes Lambda layer zip files from secret scanning
+# Excludes Lambda layer zip files and known false positives
 
 detectors:
   - all
 
-exclude_paths:
-  - '\.zip$'
-  - 'base_python.*\.zip'
-  - '.*\.zip'
-
-exclude_globs:
-  - '*.zip'
-  - 'base_python*.zip'
+allow:
+  - regex: 'https://sloria:secret@localhost'
+    reason: "Example URL in marshmallow package tests"
+  - regex: 'ftp://foo:bar@ftp\.example\.org'
+    reason: "Example FTP URL in Python stdlib"
+  - regex: 'https://username:password@proxy\.com'
+    reason: "Example proxy URL in urllib3 package"
+  - regex: 'https://username:password@host\.com:80'
+    reason: "Example URL in urllib3 package"
+  - regex: 'http://username:password@host\.com:80'
+    reason: "Example URL in urllib3 package"
