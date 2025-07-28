@@ -97,7 +97,8 @@ class TestHandler:
             
             mock_log.warn.assert_called_once()
             call_args = mock_log.warn.call_args
-            assert call_args[0][0] == "Message source is not aws:sns"
+            assert call_args[0][0] == "Skipping non-SNS record"
+            assert 'event_source' in call_args[1]
             assert 'record' in call_args[1]
             
             assert result is None
@@ -421,7 +422,7 @@ with patch('sns_cloudwatch_gw.handler') as mock_handler:
                 
                 # Should warn about one non-SNS record
                 mock_log.warn.assert_called_once()
-                assert mock_log.warn.call_args[0][0] == "Message source is not aws:sns"
+                assert mock_log.warn.call_args[0][0] == "Skipping non-SNS record"
                 
                 mock_watchtower_handler.flush.assert_called_once()
                 assert result is None

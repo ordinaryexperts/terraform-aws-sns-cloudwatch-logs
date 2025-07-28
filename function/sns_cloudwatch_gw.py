@@ -33,21 +33,22 @@ def handler(event, context):
         return
 
     for record in event["Records"]:
-        try:
-            message_source = record["EventSource"]
-        except KeyError:
+        # Skip records without EventSource
+        if "EventSource" not in record:
             log.warn("Unexpected record format - missing EventSource", record=record)
             continue
 
-        if message_source == "aws:sns":
-            try:
-                body = record["Sns"]["Message"]
-                cwLogger.info(body)
-            except KeyError:
-                log.warn("Unexpected SNS record format - missing Sns.Message", record=record)
-                continue
-        else:
-            log.warn("Message source is not aws:sns", record=record)
+        # Only process SNS records
+        if record["EventSource"] != "aws:sns":
+            log.warn("Skipping non-SNS record", event_source=record["EventSource"], record=record)
+            continue
+
+        # Extract and log the SNS message
+        if "Sns" not in record or "Message" not in record.get("Sns", {}):
+            log.warn("Unexpected SNS record format - missing Sns.Message", record=record)
+            continue
+
+        cwLogger.info(record["Sns"]["Message"])
 
     # Flush after processing all records
     cloudwatch_handler.flush()
