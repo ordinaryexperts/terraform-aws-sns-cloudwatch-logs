@@ -66,9 +66,10 @@ Terraform module for provisioning a Lambda function that routes SNS messages to 
 - CI workflow updated:
   - Disabled Trufflehog on scheduled runs
   - Python tests now use uv instead of Poetry with Python 3.12
-  - Added .trufflehog configuration to exclude zip files
+  - Fixed TruffleHog false positives using --only-verified flag
   - TruffleHog job now runs in parallel (removed unnecessary dependency)
   - Simplified job conditionals for better readability
+  - All CI checks passing
 
 ## Known Issues
 - Only processes first SNS record (documented with FIXME)
