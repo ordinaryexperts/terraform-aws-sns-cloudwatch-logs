@@ -10,9 +10,10 @@ on:
       - reopened
       - synchronize
       - ready_for_review
-  # Github requires PR title check to be re-validated after Yor action pushes changes to the release branch
-  push:
-    branches: [ release-please--branches--master ]
+      - labeled
+#  # Github requires PR title check to be re-validated after Yor action pushes changes to the release branch
+#  push:
+#    branches: [ release-please--branches--master ]
 
 
 permissions:
