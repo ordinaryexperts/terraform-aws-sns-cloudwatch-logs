@@ -1,3 +1,0 @@
-[submodule "_build_layer"]
-	path = _build_layer
-	url = https://github.com/robertpeteuil/build-lambda-layer-python
