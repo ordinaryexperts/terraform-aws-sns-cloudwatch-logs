@@ -41,8 +41,9 @@ Terraform module for provisioning a Lambda function that routes SNS messages to 
 - Added explicit provider source declarations
 
 ## Build Commands
-- `make lambda_layer` - Build the Lambda layer zip
+- `make lambda_layer` - Build the Lambda layer zip using build_layer.sh
 - `make test` - Run Python tests with uv
+- CI uses `uv sync --extra dev` and `uv run pytest`
 
 ### Test Suite Improvements
 - Achieved 100% test coverage with 16 new test cases
@@ -62,7 +63,12 @@ Terraform module for provisioning a Lambda function that routes SNS messages to 
 - The module uses a custom build script that automatically detects Poetry/uv projects
 - Docker is required for building the Lambda layer
 - PR #41 created for all these changes
-- CI workflow updated to disable Trufflehog on scheduled runs
+- CI workflow updated:
+  - Disabled Trufflehog on scheduled runs
+  - Python tests now use uv instead of Poetry with Python 3.12
+  - Added .trufflehog configuration to exclude zip files
+  - TruffleHog job now runs in parallel (removed unnecessary dependency)
+  - Simplified job conditionals for better readability
 
 ## Known Issues
 - Only processes first SNS record (documented with FIXME)
