@@ -120,6 +120,61 @@ The build script (`build_layer.sh`):
 
 # Providers
 
+| Name | Version |
+|------|---------|
+| <a name="provider_archive"></a> [archive](#provider\_archive) | ~> 2.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0 |
+
+# Resources
+
+| Name | Type |
+|------|------|
+| [aws_cloudwatch_event_rule.warmer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_rule) | resource |
+| [aws_cloudwatch_event_target.warmer](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_event_target) | resource |
+| [aws_cloudwatch_log_group.sns_logged_item_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
+| [aws_iam_role.lambda_cloudwatch_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy.lambda_cloudwatch_logs_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy) | resource |
+| [aws_kms_alias.lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
+| [aws_kms_key.lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
+| [aws_lambda_function.sns_cloudwatchlog](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function) | resource |
+| [aws_lambda_layer_version.logging_base](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_layer_version) | resource |
+| [aws_lambda_permission.sns_cloudwatchlog_multi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
+| [aws_lambda_permission.warmer_multi](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission) | resource |
+| [aws_sns_topic.sns_log_topic](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic) | resource |
+| [aws_sns_topic_subscription.lambda](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sns_topic_subscription) | resource |
+| [archive_file.lambda_function](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_cloudwatch_log_group.sns_logged_item_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/cloudwatch_log_group) | data source |
+| [aws_iam_policy_document.lambda_cloudwatch_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.lambda_cloudwatch_logs_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
+| [aws_sns_topic.sns_log_topic](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/sns_topic) | data source |
+
+# Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_create_log_group"></a> [create\_log\_group](#input\_create\_log\_group) | Whether to create a new CloudWatch Log Group. If false, uses an existing log group with the name specified in log\_group\_name. | `bool` | `true` | no |
+| <a name="input_create_sns_topic"></a> [create\_sns\_topic](#input\_create\_sns\_topic) | Whether to create a new SNS topic. If false, uses an existing topic with the name specified in sns\_topic\_name. | `bool` | `true` | no |
+| <a name="input_create_warmer_event"></a> [create\_warmer\_event](#input\_create\_warmer\_event) | Whether to create a CloudWatch Events rule to periodically invoke the Lambda function to prevent cold starts. | `bool` | `false` | no |
+| <a name="input_lambda_description"></a> [lambda\_description](#input\_lambda\_description) | Description to assign to Lambda Function. | `string` | `""` | no |
+| <a name="input_lambda_func_name"></a> [lambda\_func\_name](#input\_lambda\_func\_name) | Name to assign to Lambda Function. | `string` | `"SNStoCloudWatchLogs"` | no |
+| <a name="input_lambda_mem_size"></a> [lambda\_mem\_size](#input\_lambda\_mem\_size) | Lambda function memory size in MB. Must be between 128 MB and 3008 MB in 64 MB increments. | `number` | `128` | no |
+| <a name="input_lambda_publish_func"></a> [lambda\_publish\_func](#input\_lambda\_publish\_func) | Whether to publish the Lambda function as a version. | `bool` | `false` | no |
+| <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Lambda function timeout in seconds. AWS default is 3 seconds, maximum is 300 seconds (5 minutes). | `number` | `3` | no |
+| <a name="input_log_group_name"></a> [log\_group\_name](#input\_log\_group\_name) | Name of CloudWatch Log Group created or used (if previously created). | `string` | n/a | yes |
+| <a name="input_log_group_retention_days"></a> [log\_group\_retention\_days](#input\_log\_group\_retention\_days) | Number of days to retain data in the log group (0 = always retain). | `number` | `0` | no |
+| <a name="input_sns_topic_name"></a> [sns\_topic\_name](#input\_sns\_topic\_name) | Name of SNS Topic logging to CloudWatch Log. | `string` | n/a | yes |
+| <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to assign to all created resources. | `map(string)` | `{}` | no |
+
+# Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_cloudwatch_event_rule_arn"></a> [cloudwatch\_event\_rule\_arn](#output\_cloudwatch\_event\_rule\_arn) | ARN of CloudWatch Trigger Event created to prevent hibernation. |
+| <a name="output_lambda_arn"></a> [lambda\_arn](#output\_lambda\_arn) | ARN of created Lambda Function. |
+| <a name="output_lambda_iam_role_arn"></a> [lambda\_iam\_role\_arn](#output\_lambda\_iam\_role\_arn) | Lambda IAM Role ARN. |
+| <a name="output_lambda_iam_role_id"></a> [lambda\_iam\_role\_id](#output\_lambda\_iam\_role\_id) | Lambda IAM Role ID. |
 | <a name="output_lambda_last_modified"></a> [lambda\_last\_modified](#output\_lambda\_last\_modified) | The date Lambda Function was last modified. |
 | <a name="output_lambda_name"></a> [lambda\_name](#output\_lambda\_name) | Name assigned to Lambda Function. |
 | <a name="output_lambda_version"></a> [lambda\_version](#output\_lambda\_version) | Latest published version of Lambda Function. |
