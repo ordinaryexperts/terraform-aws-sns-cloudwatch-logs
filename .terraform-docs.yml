@@ -2,6 +2,8 @@ formatter: markdown table
 
 recursive:
   enabled: false
+  path: .
+  include-main: true
 
 sort:
   enabled: true
@@ -9,11 +11,10 @@ sort:
 
 sections:
   hide:
-    - data-sources
-    - modules
-    - providers
-    - resources
 #    - requirements
+#    - providers
+#    - resources
+#    - data-sources
 
 output:
   file: README.md
