@@ -70,6 +70,8 @@ Terraform module for provisioning a Lambda function that routes SNS messages to 
   - TruffleHog job now runs in parallel (removed unnecessary dependency)
   - Simplified job conditionals for better readability
   - All CI checks passing
+- Lambda layer must be committed to repository for Terraform module distribution
+- README includes comprehensive build documentation
 
 ## Known Issues
 - Only processes first SNS record (documented with FIXME)
