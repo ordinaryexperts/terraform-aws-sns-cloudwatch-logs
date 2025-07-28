@@ -1,9 +1,10 @@
 # TruffleHog Configuration
 # Excludes Lambda layer zip files from secret scanning
 
-exclude:
-  paths:
-    - "*.zip"
-    - "**/*.zip"
-  patterns:
-    - "base_python[0-9.]+\\.zip"
+# v3 format
+detectors:
+  - all
+
+exclude_paths:
+  - .*\.zip$
+  - base_python.*\.zip$
