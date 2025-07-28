@@ -56,8 +56,10 @@ module "sns_logger" {
 > NOTE: Make sure you are using [version pinning](https://www.terraform.io/docs/modules/usage.html#module-versions) to avoid unexpected changes when the module is updated.
 
 
-Building the Lambda Layer
--------------------------
+Contributing
+------------
+
+### Building the Lambda Layer
 
 This module includes a pre-built Lambda layer (`base_python3.12.zip`) containing all Python dependencies. The layer must be rebuilt and committed to the repository when:
 
@@ -65,13 +67,13 @@ This module includes a pre-built Lambda layer (`base_python3.12.zip`) containing
 - Changing the Python runtime version
 - Adding or removing dependencies
 
-### Prerequisites
+#### Prerequisites
 
 - Docker installed and running
 - [uv](https://github.com/astral-sh/uv) installed (for dependency management)
 - Write access to the repository
 
-### Build Process
+#### Build Process
 
 1. **Build the layer**:
    ```bash
@@ -91,7 +93,7 @@ This module includes a pre-built Lambda layer (`base_python3.12.zip`) containing
    git commit -m "chore: Update Lambda layer with new dependencies"
    ```
 
-### How it Works
+#### How it Works
 
 The build script (`build_layer.sh`):
 1. Detects or generates a `requirements.txt` from `function/pyproject.toml` using `uv pip compile`
@@ -99,7 +101,7 @@ The build script (`build_layer.sh`):
 3. Creates a Lambda-compatible zip file with dependencies in the correct directory structure
 4. Validates the layer size against AWS Lambda limits (250MB unzipped)
 
-### Important Notes
+#### Important Notes
 
 - The pre-built layer **must be committed** to the repository for the Terraform module to work
 - The layer is built for a specific Python version (currently 3.12) and must match the Lambda runtime
