@@ -87,6 +87,7 @@ docker run --rm \
     --network host \
     -v "${TEMP_DIR}":/var/task \
     -w /var/task \
+    -u "$(id -u):$(id -g)" \
     "public.ecr.aws/sam/build-python${PYTHON_VERSION}:latest" \
     bash -c "
         set -e
