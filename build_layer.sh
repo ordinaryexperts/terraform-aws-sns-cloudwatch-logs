@@ -36,17 +36,17 @@ if [[ -z "${REQUIREMENTS_FILE:-}" ]]; then
         REQUIREMENTS_FILE="function/requirements.txt"
         log "Using requirements.txt from function/ directory"
     else
-        # Check if Poetry is being used
+        # Check if uv/pyproject.toml is being used
         if [[ -f "function/pyproject.toml" ]]; then
-            log "Found Poetry project, exporting requirements..."
-            (cd function && poetry export -f requirements.txt --output requirements.txt --without-hashes)
+            log "Found pyproject.toml, exporting requirements with uv..."
+            (cd function && uv pip compile pyproject.toml -o requirements.txt)
             REQUIREMENTS_FILE="function/requirements.txt"
         elif [[ -f "pyproject.toml" ]]; then
-            log "Found Poetry project, exporting requirements..."
-            poetry export -f requirements.txt --output requirements.txt --without-hashes
+            log "Found pyproject.toml, exporting requirements with uv..."
+            uv pip compile pyproject.toml -o requirements.txt
             REQUIREMENTS_FILE="requirements.txt"
         else
-            error "No requirements.txt found and no Poetry project detected"
+            error "No requirements.txt found and no pyproject.toml detected"
             exit 1
         fi
     fi
@@ -115,7 +115,7 @@ if [[ ${ZIP_SIZE_BYTES} -gt 262144000 ]]; then  # 250MB in bytes
     warning "Consider using container images or splitting dependencies"
 fi
 
-# Clean up temporary requirements.txt if we created it from Poetry
+# Clean up temporary requirements.txt if we created it from pyproject.toml
 if [[ -f "function/pyproject.toml" ]] && [[ "${REQUIREMENTS_FILE}" == "function/requirements.txt" ]]; then
     rm -f "${REQUIREMENTS_FILE}"
     log "Cleaned up temporary requirements.txt"
