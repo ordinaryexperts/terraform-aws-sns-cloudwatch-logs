@@ -29,6 +29,8 @@ def handler(event, context):
 
     try:
         # FIXME: What if there are more than one record?
+        # Currently only processes the first record in the event
+        # Lambda typically sends one SNS message per invocation, but this could change
         message_source = event["Records"][0]["EventSource"]
     except KeyError:
         log.warn("Unexpected event format", lambda_event=event)
@@ -41,7 +43,8 @@ def handler(event, context):
     else:
         log.warn("Message source is not aws:sns", event=event)
 
-    # FIXME: What should we return?
+    # Lambda doesn't require a specific return value for asynchronous invocations
+    # Returning None indicates successful completion
     return
 
 

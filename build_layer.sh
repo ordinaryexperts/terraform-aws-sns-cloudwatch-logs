@@ -4,6 +4,12 @@ set -euo pipefail
 
 # AWS Lambda Layer Builder for Python
 # Uses official AWS SAM CLI build images
+#
+# This script builds a Lambda layer containing Python dependencies:
+# 1. Auto-detects requirements.txt or generates it from pyproject.toml (uv/Poetry)
+# 2. Uses Docker with AWS SAM CLI build image for consistent builds
+# 3. Creates a zip file compatible with Lambda layer structure
+# 4. Validates the layer size against Lambda limits
 
 # Configuration
 PYTHON_VERSION="3.12"
