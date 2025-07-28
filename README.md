@@ -35,8 +35,14 @@ This Lambda Function forwards SNS messages to a CloudWatch Log Group.
 - Enables cloud-init, bootstraps and functions to easily write log entries to a centralized CloudWatch Log
 - Simplifies troubleshooting of solutions with decentralized logic
   - scripts and functions spread across instances, Lambda and services
-- Easily add instrumentation to scripts: `aws sns publish --topic-arn $TOPIC_ARN --message $LOG_ENTRY`
-  - Use with IAM instance policy requires `--region $AWS_REGION` parameter
+
+**Example Usage After Deployment:**
+
+Once the module is deployed, applications and scripts can send logs to CloudWatch by publishing to the created SNS topic:
+```bash
+aws sns publish --topic-arn $TOPIC_ARN --message $LOG_ENTRY
+```
+- When using with IAM instance policy, include the `--region $AWS_REGION` parameter
 
 
 
@@ -46,7 +52,7 @@ Usage
 ```hcl
 module "sns_logger" {
   source            = "ordinaryexperts/sns-cloudwatch-logs/aws"
-  version           = "~> 5.2"
+  version           = "~> 7.1"
 
   sns_topic_name    = "projectx-logging"
   log_group_name    = "projectx"
