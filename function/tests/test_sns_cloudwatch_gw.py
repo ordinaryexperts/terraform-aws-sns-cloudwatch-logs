@@ -67,7 +67,7 @@ class TestHandler:
 
     @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
     def test_handler_multiple_records(self, mock_cw_handler_class, sns_event_multiple_records, lambda_context, mock_watchtower_handler):
-        """Test handling of multiple SNS records (only processes first)."""
+        """Test handling of multiple SNS records - should process all records."""
         mock_cw_handler_class.return_value = mock_watchtower_handler
         mock_cw_logger = MagicMock()
         
@@ -76,7 +76,12 @@ class TestHandler:
             
             result = sns_cloudwatch_gw.handler(sns_event_multiple_records, lambda_context)
             
-            mock_cw_logger.info.assert_called_once_with("First test log message")
+            # Verify both messages were logged
+            assert mock_cw_logger.info.call_count == 2
+            mock_cw_logger.info.assert_any_call("First test log message")
+            mock_cw_logger.info.assert_any_call("Second test log message")
+            
+            # Verify flush was called once after all records
             mock_watchtower_handler.flush.assert_called_once()
             
             assert result is None
@@ -92,8 +97,9 @@ class TestHandler:
             
             mock_log.warn.assert_called_once()
             call_args = mock_log.warn.call_args
-            assert call_args[0][0] == "Message source is not aws:sns"
-            assert 'event' in call_args[1]
+            assert call_args[0][0] == "Skipping non-SNS record"
+            assert 'event_source' in call_args[1]
+            assert 'record' in call_args[1]
             
             assert result is None
 
@@ -108,7 +114,7 @@ class TestHandler:
             
             mock_log.warn.assert_called_once()
             call_args = mock_log.warn.call_args
-            assert call_args[0][0] == "Unexpected event format"
+            assert call_args[0][0] == "Unexpected event format - missing Records"
             assert 'lambda_event' in call_args[1]
             
             assert result is None
@@ -124,7 +130,7 @@ class TestHandler:
             
             mock_log.warn.assert_called_once()
             call_args = mock_log.warn.call_args
-            assert call_args[0][0] == "Unexpected event format"
+            assert call_args[0][0] == "Unexpected event format - missing Records"
             
             assert result is None
 
@@ -314,7 +320,10 @@ with patch('sns_cloudwatch_gw.handler') as mock_handler:
         with patch('sns_cloudwatch_gw.log', mock_log):
             result = sns_cloudwatch_gw.handler(event_no_source, lambda_context)
             
-            mock_log.warn.assert_called_once_with("Unexpected event format", lambda_event=event_no_source)
+            mock_log.warn.assert_called_once()
+            call_args = mock_log.warn.call_args
+            assert call_args[0][0] == "Unexpected record format - missing EventSource"
+            assert 'record' in call_args[1]
             assert result is None
 
     @pytest.mark.parametrize("env_level,expected_level", [
@@ -368,6 +377,99 @@ with patch('sns_cloudwatch_gw.handler') as mock_handler:
             
             mock_cw_logger.info.assert_called_once_with(message_content)
             assert result is None
+
+
+    @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
+    def test_handler_mixed_event_sources(self, mock_cw_handler_class, lambda_context, mock_watchtower_handler):
+        """Test handling of event with mixed SNS and non-SNS records."""
+        mixed_event = {
+            "Records": [
+                {
+                    "EventSource": "aws:sns",
+                    "Sns": {
+                        "Message": "SNS message 1"
+                    }
+                },
+                {
+                    "EventSource": "aws:s3",
+                    "s3": {
+                        "bucket": {"name": "test-bucket"}
+                    }
+                },
+                {
+                    "EventSource": "aws:sns",
+                    "Sns": {
+                        "Message": "SNS message 2"
+                    }
+                }
+            ]
+        }
+        
+        mock_cw_handler_class.return_value = mock_watchtower_handler
+        mock_cw_logger = MagicMock()
+        mock_log = MagicMock()
+        
+        with patch('sns_cloudwatch_gw.logging.getLogger') as mock_get_logger:
+            with patch('sns_cloudwatch_gw.log', mock_log):
+                mock_get_logger.return_value = mock_cw_logger
+                
+                result = sns_cloudwatch_gw.handler(mixed_event, lambda_context)
+                
+                # Should log two SNS messages
+                assert mock_cw_logger.info.call_count == 2
+                mock_cw_logger.info.assert_any_call("SNS message 1")
+                mock_cw_logger.info.assert_any_call("SNS message 2")
+                
+                # Should warn about one non-SNS record
+                mock_log.warn.assert_called_once()
+                assert mock_log.warn.call_args[0][0] == "Skipping non-SNS record"
+                
+                mock_watchtower_handler.flush.assert_called_once()
+                assert result is None
+
+    @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
+    def test_handler_sns_record_missing_message(self, mock_cw_handler_class, lambda_context, mock_watchtower_handler):
+        """Test handling of SNS record missing the Message field."""
+        event_no_message = {
+            "Records": [
+                {
+                    "EventSource": "aws:sns",
+                    "Sns": {
+                        "Type": "Notification"
+                        # Missing "Message" field
+                    }
+                }
+            ]
+        }
+        
+        mock_cw_handler_class.return_value = mock_watchtower_handler
+        mock_log = MagicMock()
+        
+        with patch('sns_cloudwatch_gw.log', mock_log):
+            result = sns_cloudwatch_gw.handler(event_no_message, lambda_context)
+            
+            mock_log.warn.assert_called_once()
+            call_args = mock_log.warn.call_args
+            assert call_args[0][0] == "Unexpected SNS record format - missing Sns.Message"
+            assert 'record' in call_args[1]
+            
+            mock_watchtower_handler.flush.assert_called_once()
+            assert result is None
+
+    @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
+    def test_handler_empty_records_list(self, mock_cw_handler_class, lambda_context, mock_watchtower_handler):
+        """Test handling of event with empty Records list."""
+        empty_records_event = {
+            "Records": []
+        }
+        
+        mock_cw_handler_class.return_value = mock_watchtower_handler
+        
+        result = sns_cloudwatch_gw.handler(empty_records_event, lambda_context)
+        
+        # Should handle gracefully - just flush without logging anything
+        mock_watchtower_handler.flush.assert_called_once()
+        assert result is None
 
 
 class TestMainExecution:
