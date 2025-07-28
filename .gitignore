@@ -13,3 +13,6 @@ function/requirements.txt
 
 # IntelliJ
 .idea/
+
+# Claude
+.tmp.claude/
