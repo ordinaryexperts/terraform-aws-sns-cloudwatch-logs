@@ -52,7 +52,7 @@ Usage
 ```hcl
 module "sns_logger" {
   source            = "ordinaryexperts/sns-cloudwatch-logs/aws"
-  version           = "~> 7.1"
+  version           = "~> 7.4"
 
   sns_topic_name    = "projectx-logging"
   log_group_name    = "projectx"
@@ -60,6 +60,36 @@ module "sns_logger" {
 ```
 
 > NOTE: Make sure you are using [version pinning](https://www.terraform.io/docs/modules/usage.html#module-versions) to avoid unexpected changes when the module is updated.
+
+
+Recent Changes
+--------------
+
+### v7.4.0 (2025-01-29)
+- **Configurable Log Stream Format**: Added `log_stream_format` variable to control CloudWatch log stream naming
+  - Default changed from per-minute (`%Y-%m-%d/%H-%M`) to hourly (`%Y-%m-%d/%H00`) format
+  - Reduces log stream proliferation by 60x
+  - Fully backward compatible with custom strftime format support
+  - Configure via `LOG_STREAM_FORMAT` environment variable
+
+### v7.3.0 (2025-01-29)
+- **SNS Message Deduplication**: Prevent duplicate logging of SNS messages to Lambda logs
+  - Messages are now properly handled without double-logging
+  - Improved Lambda function efficiency
+
+### v7.2.0 (2025-01-28)
+- **Process All SNS Records**: Fixed Lambda to process all records in event array
+  - Previously only processed first record, potentially dropping messages
+  - Added comprehensive error handling for malformed records
+  - Improved reliability for batch message processing
+
+### Recent Improvements
+- **Python 3.12 Support**: Upgraded Lambda runtime from Python 3.9 to 3.12
+- **Build System Modernization**: Replaced deprecated build tool with custom `build_layer.sh` script
+- **Package Manager Migration**: Converted from Poetry to uv for faster dependency management
+- **Type Safety**: Added type hints to Lambda handler function
+- **Enhanced Testing**: Achieved 100% test coverage with comprehensive test suite
+- **Terraform Updates**: Support for AWS Provider v6.x and improved variable validation
 
 
 Contributing
