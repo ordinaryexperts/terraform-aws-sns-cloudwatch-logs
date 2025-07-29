@@ -23,7 +23,7 @@ permissions:
 jobs:
   validate:
     name: Validate PR title
-    if: "${{ github.event.pull_request.draft != true }}"
+    if: "${{ github.event.pull_request.draft != true && !contains(github.event.pull_request.labels.*.name, 'autorelease: pending') }}"
     runs-on: ubuntu-latest
     permissions:
       contents: write
