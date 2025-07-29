@@ -11,10 +11,6 @@ on:
       - synchronize
       - ready_for_review
       - labeled
-  # PR title check must be re-run after any Github Action workflow pushes
-  # changes to the release branch.
-  push:
-    branches: [ release-please--branches--master ]
 
 
 permissions:
