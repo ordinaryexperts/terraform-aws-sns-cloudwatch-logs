@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [7.3.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v7.2.0...v7.3.0) (2025-07-29)
+
+
+### Features
+
+* Prevent SNS messages from being double-logged to Lambda logs ([#51](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/51)) ([8d528b0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/8d528b0d5e637242cff7ef8c0fb81f584fe9eea1))
+
 ## [7.2.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v7.1.1...v7.2.0) (2025-07-28)
 
 
