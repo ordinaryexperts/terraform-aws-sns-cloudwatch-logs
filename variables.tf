@@ -86,6 +86,12 @@ variable "lambda_mem_size" {
   }
 }
 
+variable "log_stream_format" {
+  type        = string
+  default     = "%Y-%m-%d/%H00"
+  description = "Python strftime format string for CloudWatch log stream names. Default creates hourly streams (e.g., 2025-07-29/0600)."
+}
+
 variable "tags" {
   type        = map(string)
   description = "Map of tags to assign to all created resources."
