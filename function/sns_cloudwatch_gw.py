@@ -23,8 +23,9 @@ def handler(event: Dict[str, Any], context: Any) -> None:
     # Prevent propagation to root logger to avoid double logging
     cwLogger.propagate = False
     cloudwatch_log_group = env.str("LOG_GROUP")
+    log_stream_format = env.str("LOG_STREAM_FORMAT", "%Y-%m-%d/%H00")
     now = datetime.datetime.now(pytz.utc)
-    cloudwatch_log_stream = now.strftime("%Y-%m-%d/%H-%M")
+    cloudwatch_log_stream = now.strftime(log_stream_format)
     cloudwatch_handler = watchtower.CloudWatchLogHandler(
         log_group=cloudwatch_log_group, stream_name=cloudwatch_log_stream
     )

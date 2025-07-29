@@ -148,7 +148,7 @@ class TestHandler:
                 
     @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
     def test_handler_stream_name_format(self, mock_cw_handler_class, sns_event, lambda_context, mock_watchtower_handler):
-        """Test CloudWatch log stream name format."""
+        """Test CloudWatch log stream name format with default (hourly) format."""
         mock_cw_handler_class.return_value = mock_watchtower_handler
         mock_watchtower_handler.level = logging.INFO
         
@@ -160,7 +160,25 @@ class TestHandler:
             sns_cloudwatch_gw.handler(sns_event, lambda_context)
             
             call_args = mock_cw_handler_class.call_args
-            assert call_args.kwargs['stream_name'] == '2023-06-15/10-30'
+            # Default format should now be hourly
+            assert call_args.kwargs['stream_name'] == '2023-06-15/1000'
+    
+    @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
+    def test_handler_custom_stream_name_format(self, mock_cw_handler_class, sns_event, lambda_context, mock_watchtower_handler):
+        """Test CloudWatch log stream name with custom format from environment."""
+        mock_cw_handler_class.return_value = mock_watchtower_handler
+        mock_watchtower_handler.level = logging.INFO
+        
+        fixed_time = datetime.datetime(2023, 6, 15, 10, 30, 45, tzinfo=pytz.utc)
+        
+        with patch.dict(os.environ, {'LOG_STREAM_FORMAT': '%Y/%m/%d/hour-%H'}):
+            with patch('sns_cloudwatch_gw.datetime.datetime') as mock_datetime:
+                mock_datetime.now.return_value = fixed_time
+                
+                sns_cloudwatch_gw.handler(sns_event, lambda_context)
+                
+                call_args = mock_cw_handler_class.call_args
+                assert call_args.kwargs['stream_name'] == '2023/06/15/hour-10'
 
     def test_handler_missing_log_group_env(self, sns_event, lambda_context):
         """Test handler behavior when LOG_GROUP env var is missing."""

@@ -170,6 +170,7 @@ The build script (`build_layer.sh`):
 | <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Lambda function timeout in seconds. AWS default is 3 seconds, maximum is 300 seconds (5 minutes). | `number` | `3` | no |
 | <a name="input_log_group_name"></a> [log\_group\_name](#input\_log\_group\_name) | Name of CloudWatch Log Group created or used (if previously created). | `string` | n/a | yes |
 | <a name="input_log_group_retention_days"></a> [log\_group\_retention\_days](#input\_log\_group\_retention\_days) | Number of days to retain data in the log group (0 = always retain). | `number` | `0` | no |
+| <a name="input_log_stream_format"></a> [log\_stream\_format](#input\_log\_stream\_format) | Python strftime format string for CloudWatch log stream names. Default creates hourly streams (e.g., 2025-07-29/0600). | `string` | `"%Y-%m-%d/%H00"` | no |
 | <a name="input_sns_topic_name"></a> [sns\_topic\_name](#input\_sns\_topic\_name) | Name of SNS Topic logging to CloudWatch Log. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | Map of tags to assign to all created resources. | `map(string)` | `{}` | no |
 
