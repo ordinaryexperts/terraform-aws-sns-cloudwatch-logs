@@ -106,7 +106,16 @@ Terraform module for provisioning a Lambda function that routes SNS messages to 
 - All tests pass with 100% coverage
 - mypy type checking passes without issues
 
+### Configurable Log Stream Format (PR #52 - In Progress)
+- **Implemented**: Lambda function now supports configurable log stream format via `LOG_STREAM_FORMAT` environment variable
+- **Default changed**: From per-minute (`%Y-%m-%d/%H-%M`) to hourly (`%Y-%m-%d/%H00`) streams
+- Added `log_stream_format` Terraform variable with sensible default
+- Reduces log stream proliferation by 60x with hourly vs per-minute streams
+- Fully backward compatible - users can customize format using Python strftime syntax
+- Added comprehensive tests for both default and custom formats
+- Maintained 100% test coverage
+- Fixes issue #19
+
 ## Known Issues
 - No error handling for CloudWatch operations
 - No retry logic for transient failures
-- CloudWatch stream naming logic could be more configurable
