@@ -1,0 +1,22 @@
+{
+  "release-type": "terraform-module",
+  "extra-files": [
+    {
+      "type": "generic",
+      "path": "README.md",
+      "regex": true,
+      "glob": "**/*.md",
+      "updatePaths": [
+        {
+          "path": "README.md",
+          "replacements": [
+            {
+              "from": "version\\s*=\\s*\"~>\\s*[0-9]+\\.[0-9]+\"",
+              "to": "version           = \"~> ${version}\""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
