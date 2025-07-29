@@ -6,6 +6,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [7.4.1](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v7.4.0...v7.4.1) (2025-07-29)
+
+
+### Bug Fixes
+
+* Update module version in usage example ([#55](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/55)) ([977928a](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/977928ac807fe6e02a0cf813825eb49ba17e0926))
+
 ## [7.4.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v7.3.0...v7.4.0) (2025-07-29)
 
 
