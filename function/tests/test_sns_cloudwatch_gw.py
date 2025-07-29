@@ -457,6 +457,40 @@ with patch('sns_cloudwatch_gw.handler') as mock_handler:
             assert result is None
 
     @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
+    @patch('sns_cloudwatch_gw.logging.getLogger')
+    def test_handler_no_double_logging(self, mock_get_logger, mock_cw_handler_class, sns_event, lambda_context, mock_watchtower_handler):
+        """Test that SNS messages are not propagated to root logger (no double logging)."""
+        # Create both cloudwatch logger and root logger mocks
+        mock_cw_logger = create_mock_logger()
+        mock_root_logger = create_mock_logger()
+        
+        # Configure getLogger to return different loggers based on name
+        def get_logger_side_effect(name=None):
+            if name == "cloudwatch":
+                return mock_cw_logger
+            return mock_root_logger
+            
+        mock_get_logger.side_effect = get_logger_side_effect
+        setup_cloudwatch_handler_mock(mock_cw_handler_class, mock_watchtower_handler)
+        
+        # Capture any handlers added to root logger
+        root_handlers = []
+        mock_root_logger.addHandler.side_effect = lambda h: root_handlers.append(h)
+        
+        sns_cloudwatch_gw.handler(sns_event, lambda_context)
+        
+        # Verify SNS message was logged to cloudwatch logger
+        mock_cw_logger.info.assert_called_once_with("This is a test log message from SNS")
+        
+        # Verify root logger did NOT receive the SNS message
+        mock_root_logger.info.assert_not_called()
+        
+        # Verify no handlers were added to root logger for SNS messages
+        # This check ensures that the CloudWatch handler is isolated to the "cloudwatch" logger
+        # and not inadvertently attached to the root logger, which would cause double logging
+        assert len(root_handlers) == 0
+
+    @patch('sns_cloudwatch_gw.watchtower.CloudWatchLogHandler')
     def test_handler_empty_records_list(self, mock_cw_handler_class, lambda_context, mock_watchtower_handler):
         """Test handling of event with empty Records list."""
         empty_records_event = {
