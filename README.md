@@ -52,7 +52,7 @@ Usage
 ```hcl
 module "sns_logger" {
   source            = "ordinaryexperts/sns-cloudwatch-logs/aws"
-  version           = "~> 7.1"
+  version           = "~> 7.4"
 
   sns_topic_name    = "projectx-logging"
   log_group_name    = "projectx"
