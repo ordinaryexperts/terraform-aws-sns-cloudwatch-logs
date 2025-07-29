@@ -6,6 +6,14 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 
+## [7.2.0](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v7.1.1...v7.2.0) (2025-07-28)
+
+
+### Features
+
+* Add type hints to Lambda function ([#50](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/50)) ([37cbb7f](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/37cbb7ff56c5b843b87e55e62fd937f898facc79))
+* Process all SNS records in Lambda event ([#48](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/issues/48)) ([76d51ba](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/commit/76d51badc024f6d245457a5762e53f49de4389e0))
+
 ## [7.1.1](https://github.com/ordinaryexperts/terraform-aws-sns-cloudwatch-logs/compare/v7.1.0...v7.1.1) (2025-07-28)
 
 
